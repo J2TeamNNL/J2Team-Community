@@ -36,9 +36,9 @@ $text";
 }
 $message .= "
 $text";
+$curl = curl_init();
 $message = curl_escape($curl,$message);
 $url = "https://graph.facebook.com/$post_id/comments?method=post&message=$message&access_token=$token";
-$curl = curl_init();
 curl_setopt_array($curl, array(
 	CURLOPT_URL => "$url",
 	CURLOPT_RETURNTRANSFER => false,
