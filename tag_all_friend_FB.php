@@ -1,8 +1,8 @@
 <?php 
 ini_set('max_execution_time', 0);
-$post_id = "";//id b�i mu?n b�nh lu?n
-$token = "";//token c?a b?n
-$text = ""; //di?n v�o d�y l?i nh?n b?n mu?n g?i
+$post_id = "";//id bài muốn bình luận
+$token = "";//token của bạn
+$text = ""; //điền vào đây lời nhắn bạn muốn gửi
 $url = "https://graph.facebook.com/me/friends?limit=5000&fields=id&access_token=$token";
 $curl = curl_init();
 curl_setopt_array($curl, array(
@@ -19,7 +19,7 @@ $datas     = $data["data"];
 $message = "";
 foreach($datas as $key => $each){
 	$message .= "@[".$each["id"].":0] ";
-	//c? 5 b?n th� s? tag 1 l?n, tr�nh b? FB hi?u nh?m spam, v� s? t? d?ng tag m?i 10 gi�y cho d?n h?t danh s�ch
+	//cứ 5 bạn thì sẽ tag 1 lần, tránh bị FB hiểu nhầm spam, và sẽ tự động tag mỗi 10 giây cho đến hết danh sách
 	if($key == 5){
 		$message .= "
 $text";
