@@ -18,7 +18,7 @@ $data      = json_decode($response,JSON_UNESCAPED_UNICODE);
 $datas     = $data["data"];
 $message = "";
 $dem = 0;
-foreach($datas as $key => $each){
+foreach($datas as  $each){
 	$message .= "@[".$each["id"].":0] ";
 	$dem++;
 	//cứ 5 bạn thì sẽ tag 1 lần, tránh bị FB hiểu nhầm spam, và sẽ tự động tag mỗi 10 giây cho đến hết danh sách
