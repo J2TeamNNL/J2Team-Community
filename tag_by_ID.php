@@ -29,6 +29,7 @@ $text";
 		curl_exec($curl);
 		curl_close($curl);
 		sleep(10);
+		$message = "";
 		$dem=0;
 	}
 }
