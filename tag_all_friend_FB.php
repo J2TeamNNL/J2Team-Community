@@ -17,10 +17,12 @@ curl_close($curl);
 $data      = json_decode($response,JSON_UNESCAPED_UNICODE);
 $datas     = $data["data"];
 $message = "";
+$dem = 0;
 foreach($datas as $key => $each){
 	$message .= "@[".$each["id"].":0] ";
+	$dem++;
 	//cứ 5 bạn thì sẽ tag 1 lần, tránh bị FB hiểu nhầm spam, và sẽ tự động tag mỗi 10 giây cho đến hết danh sách
-	if($key == 5){
+	if($dem == 5){
 		$message .= "
 $text";
 		$url = "https://graph.facebook.com/$post_id/comments?method=post&message=$message&access_token=$token";
@@ -35,6 +37,7 @@ $text";
 		));
 		curl_exec($curl);
 		curl_close($curl);
+		$dem=0;
 		sleep(10);
 	}
 }
