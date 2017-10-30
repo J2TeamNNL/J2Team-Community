@@ -1,17 +1,17 @@
 <?php 
-//di?n m?i ID xu?ng d�ng nh�, m�nh d? m?u r?i d�
+//điền mỗi ID xuống dòng nhé, mình để mẫu rồi đó
 $ids = "11111
 11111
 11111
 11111";
-$post_id = "";//id b�i mu?n b�nh lu?n
-$token = "";//token c?a b?n
-$text = ""; //di?n v�o d�y l?i nh?n b?n mu?n g?i
+$post_id = "";//id bài muốn bình luận
+$token = "";//token của bạn
+$text = ""; //điền vào đây lời nhắn bạn muốn gửi
 $array = explode(PHP_EOL,$ids);
 $message = "";
 foreach($array as $key => $each){
 	$message .= "@[".$each.":0] ";
-	//c? 5 b?n th� s? tag 1 l?n, tr�nh b? FB hi?u nh?m spam, v� s? t? d?ng tag m?i 10 gi�y cho d?n h?t danh s�ch
+	//cứ 5 bạn thì sẽ tag 1 lần, tránh bị FB hiểu nhầm spam, và sẽ tự động tag mỗi 10 giây cho đến hết danh sách
 	if($key == 5){
 		$message .= "
 $text";
