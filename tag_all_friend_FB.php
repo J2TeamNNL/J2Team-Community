@@ -26,7 +26,6 @@ foreach($datas as  $each){
 		$message .= "
 $text";
 		$url = "https://graph.facebook.com/$post_id/comments?method=post&message=$message&access_token=$token";
-		die($url);
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => "$url",
