@@ -39,5 +39,6 @@ $text";
 		curl_close($curl);
 		$dem=0;
 		sleep(10);
+		$message = "";
 	}
 }
