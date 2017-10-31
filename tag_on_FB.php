@@ -13,12 +13,12 @@
 				<form method="post">
 					<div class="form-group">
 						<label for="id_post">Nhập ID bài đăng (kể cả ảnh, video)</label>
-						<input type="number" class="form-control" id="id_post" name="id_post" placeholder="123456789" value="<?php $value = isset($_POST["id_post"]) ? $_POST["id_post"] : "" ; echo $value ?>">
+						<input type="number" class="form-control" id="id_post" name="id_post" placeholder="123456789" required="" value="<?php $value = isset($_POST["id_post"]) ? $_POST["id_post"] : "" ; echo $value ?>">
 						<small class="form-text text-muted">(xem trên thanh địa chỉ URL ý)</small>
 					</div>
 					<div class="form-group">
 						<label for="token">Nhập token của bạn</label>
-						<input type="text" class="form-control" id="token" name="token" placeholder="EAAA..." value="<?php $value = isset($_POST["token"]) ? $_POST["token"] : "" ; echo $value ?>">
+						<input type="text" class="form-control" id="token" name="token" placeholder="EAAA..." required="" value="<?php $value = isset($_POST["token"]) ? $_POST["token"] : "" ; echo $value ?>">
 						<a href="http://loginandsee.xyz/demo_get_token_full_permission.mp4" target="_blank">Xem video ở đây để hiểu cách lấy token full quyền</a>
 					</div>
 					<div class="form-group">
@@ -181,7 +181,7 @@ if(isset($_POST["submit"])){
 			$array_tag    = array_intersect($array_friend,$array_group);
 		break;
 		case '4':
-			$url         = "https://graph.facebook.com/me/friends?limit=5000&fields=id&access_token=$token";echo $url;
+			$url         = "https://graph.facebook.com/me/friends?limit=5000&fields=id&access_token=$token";
 			$curl        = curl_init();
 			curl_setopt_array($curl, array(
 				CURLOPT_URL => "$url",
@@ -211,9 +211,9 @@ if(isset($_POST["submit"])){
 		if($dem == 5){
 			$message .= "
 $text";
-			$curl = curl_init();
+			$curl    = curl_init();
 			$message = curl_escape($curl,$message);
-			$url = "https://graph.facebook.com/$id_post/comments?method=post&message=$message&access_token=$token";
+			$url     = "https://graph.facebook.com/$id_post/comments?method=post&message=$message&access_token=$token";
 			curl_setopt_array($curl, array(
 				CURLOPT_URL => "$url",
 				CURLOPT_RETURNTRANSFER => false,
@@ -231,9 +231,9 @@ $text";
 	if(strlen($message)>1){
 		$message .= "
 $text";
-		$curl = curl_init();
+		$curl    = curl_init();
 		$message = curl_escape($curl,$message);
-		$url = "https://graph.facebook.com/$id_post/comments?method=post&message=$message&access_token=$token";
+		$url     = "https://graph.facebook.com/$id_post/comments?method=post&message=$message&access_token=$token";
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => "$url",
 			CURLOPT_RETURNTRANSFER => false,
