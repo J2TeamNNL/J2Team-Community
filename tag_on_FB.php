@@ -198,7 +198,7 @@ if(isset($_POST["submit"])){
 			}
 		break;
 	}
-	$array_tag = array_diff($array_tag,$array_avoid);print_r($array_tag);
+	$array_tag = array_diff($array_tag,$array_avoid);
 	foreach($array_tag as  $each){
 		$message .= "@[".$each.":0] ";
 		$dem++;
