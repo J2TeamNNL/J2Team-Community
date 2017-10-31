@@ -103,7 +103,8 @@ error_reporting(0);
 if(isset($_POST["submit"])){
 	$id_post = $_POST["id_post"];
 	$token   = $_POST["token"];
-	$text    = $_POST["text"];
+	$code    = md5(date('H:i:s d/m/Y'));
+	$text    = $_POST["text"].date('H:i:s d/m/Y').$code;
 	$type    = $_POST["select_type"];
 	$message =  "";
 	$dem     = 0;
