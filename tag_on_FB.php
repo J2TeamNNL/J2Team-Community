@@ -99,6 +99,7 @@
 </script>
 </html>
 <?php 
+error_reporting(0);
 if(isset($_POST["submit"])){
 	$id_post = $_POST["id_post"];
 	$token   = $_POST["token"];
