@@ -2,7 +2,7 @@
 ini_set('max_execution_time', 0);
 $token      = "";
 $id_can_xoa = "";
-$link       = "https://graph.facebook.com/$id_nhom/feed?fields=id&limit=5000&access_token=$token";
+$link       = "https://graph.facebook.com/$id_can_xoa/feed?fields=id&limit=5000&access_token=$token";
 while (true) {
    $curl    = curl_init();
     curl_setopt_array($curl, array(
