@@ -2,7 +2,7 @@
 ini_set('max_execution_time', 0);
 //token full quyền
 $token   = "";
-$id_minh = ""
+$id_minh = "";
 //điền ID nhóm
 $id_nhom = "";
 $link    = "https://graph.facebook.com/$id_minh/friends?fields=id&limit=5000&access_token=$token"; 
