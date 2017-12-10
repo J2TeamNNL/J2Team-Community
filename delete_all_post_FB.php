@@ -14,7 +14,7 @@ while (true) {
     ));
     $response = curl_exec($curl);
     curl_close($curl);
-    $data     = json_decode($response,JSON_UNESCAPED_UNICODE);;
+    $data     = json_decode($response,JSON_UNESCAPED_UNICODE);
     $datas = $data["data"];
     foreach($datas as $each){
         $id_lay = $each["id"];
