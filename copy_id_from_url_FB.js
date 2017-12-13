@@ -44,6 +44,7 @@ if(id=="0"){
 }
 console.log(id);
 if(id!="0"){
+	alert("Developed by Moderator J2Team Community");
 	copy(id);
 }
 else{
