@@ -77,6 +77,7 @@ function getPost(){
 
 var id = getPost();
 if(id!="0" && id!="1" && isNaN(id)==false){
+	alert("Developed by Moderator J2Team Community");
 	copy(id);
 }
 else if(id!="1"){
