@@ -47,6 +47,7 @@ if(id=="0"){
 }
 console.log(id);
 if(id!="0"){
+	alert("Được phát triển bởi kiểm duyệt viên J2Team Community\nĐã copy!");
 	copy(id);
 }
 else{
