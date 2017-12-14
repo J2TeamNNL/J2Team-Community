@@ -1,5 +1,3 @@
-
-//Id bài đăng
 javascript:
 var currentLocation = window.location.href;
 var string_url = currentLocation.split("/");
@@ -47,27 +45,33 @@ function getPost(){
 	try{
 		if(currentLocation.indexOf("/permalink/") !== -1){
 			var id = string_url[6];
-			return id;
+			if(id!="null") return id;
+			else return "0";
 		}
 		else if(currentLocation.indexOf("posts") !== -1){
 			var id = string_url[5];
-			return id;
+			if(id!="null") return id;
+			else return "0";
 		}
 		else if(currentLocation.indexOf("videos") !== -1){
 			var id = string_url[string_url.length-2];
-			return id;
+			if(id!="null") return id;
+			else return "0";
 		}
 		else if(currentLocation.indexOf("fbid=") !== -1){
 			var id = getAllUrlParams().fbid;
-			return id;
+			if(id!="null") return id;
+			else return "0";
 		}
 		else if(currentLocation.indexOf("/photos/a") !== -1){
 			var id = string_url[6];
-			return id;
+			if(id!="null") return id;
+			else return "0";
 		}
 		else if(currentLocation.indexOf("m.facebook") !== -1){
 			var id = getAllUrlParams().id;
-			return id;
+			if(id!="null") return id;
+			else return "0";
 		}
 		return 0;
 	}
@@ -78,7 +82,7 @@ function getPost(){
 
 var id = getPost();
 if(id!="0" && id!="1" && isNaN(id)==false){
-	alert("Developed by Moderator J2Team Community");
+	alert("Được phát triển bởi kiểm duyệt viên J2Team Community\nĐã copy!");
 	copy(id);
 }
 else if(id!="1"){
