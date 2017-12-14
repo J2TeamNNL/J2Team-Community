@@ -9,7 +9,8 @@ b.textContent=id,document.body.appendChild(b),c.removeAllRanges(),b.select(),doc
 function getMe(){
 	try{
 		var id = encodeURIComponent(require("TimelineController").getProfileID());
-		return id;
+		if(id!="null") return id;
+		else return "0";
 	}
 	catch (e){
 		return "0";
@@ -19,7 +20,8 @@ function getGroup(){
 	try{
 		var div = document.getElementsByClassName("coverWrap");
 		var id = div[0].dataset.referrerid;
-		return id;
+		if(id!="null") return id;
+		else return "0";
 	}
 	catch (e){
 		return "0";
@@ -28,7 +30,8 @@ function getGroup(){
 function getPage(){
 	try{
 		var id = encodeURIComponent(require("CurrentPage").getID());
-		return id;
+		if(id!="null") return id;
+		else return "0";
 	}
 	catch (e){
 		return "0";
@@ -44,7 +47,6 @@ if(id=="0"){
 }
 console.log(id);
 if(id!="0"){
-	alert("Developed by Moderator J2Team Community");
 	copy(id);
 }
 else{
