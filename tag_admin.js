@@ -7,7 +7,10 @@ function fail(){
   alert("Bạn phải ở đúng trang đã");
 }
 function failMobile(){
-	alert("Không hỗ trợ cho điện thoại");
+  alert("Không hỗ trợ cho điện thoại");
+}
+function failCmt(){
+	alert("Bạn phải vào link của bình luận đã (ấn vào thời gian đăng ở dưới bình luận ấy)");
 }
 function redirect(id_post) {
   fail();
@@ -47,27 +50,39 @@ function getAllUrlParams() {
   return obj;
 }
 function getPost(){
-	try{
+  try{
     if(currentLocation.indexOf("m.facebook") !== -1){
       failMobile();
       return 1;
     }
-		else if(currentLocation.indexOf("/permalink/") !== -1){
-			var id = string_url[6];
-			return id;
-		}
-		else if(currentLocation.indexOf("videos") !== -1){
-			var id = string_url[string_url.length-2];
+    else if(currentLocation.indexOf("/permalink/") !== -1){
+      var id = string_url[6];
+      return id;
+    }
+    else if(currentLocation.indexOf("videos") !== -1){
+      var id = string_url[string_url.length-2];
       redirect(id);
       return 1;
-		}
-		else if(currentLocation.indexOf("fbid=") !== -1){
+    }
+    else if(currentLocation.indexOf("fbid=") !== -1){
       var set    = getAllUrlParams().set;
       var string = set.split(".");
       var id     = string[1];
-			redirect(id);
+      redirect(id);
       return 1;
-		}
+    }
+    return 0;
+  }
+  catch (e){
+    return 0;
+  }
+}
+function getIDCmt(){
+	try{
+    if(currentLocation.indexOf("comment_id") !== -1){
+      var id_cmt    = getAllUrlParams().comment_id;
+      return id_cmt;
+    }
 		return 0;
 	}
 	catch (e){
@@ -81,10 +96,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 };
 var id_post = getPost();
 if(id_post!="0" && id_post!="1" && isNaN(id_post)==false){
-  var id_cmt = prompt('Điền ID bình luận vi phạm (có thể để trống nếu muốn báo bài đăng');
-  var cmt_id = (id_cmt.length>0) ? "fb.com/"+id_cmt : "";
-	var post_id = id_post;
-  addCmt();
+  var check   = prompt('Ấn Ok nếu bạn muốn báo cáo bình luận này');
+  var id_cmt  = getIDCmt();
+  if(id_cmt!="0"){
+    var cmt_id  = (check!=null) ? "fb.com/"+id_cmt : "";
+    var post_id = id_post;
+    addCmt();
+  }
 }
 else if(id_post!="1"){
 	fail();
