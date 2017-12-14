@@ -1,5 +1,6 @@
 
 //Id bài đăng
+javascript:
 var currentLocation = window.location.href;
 var string_url = currentLocation.split("/");
 function fail(){
