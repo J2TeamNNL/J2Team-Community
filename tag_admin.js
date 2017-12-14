@@ -96,7 +96,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 };
 var id_post = getPost();
 if(id_post!="0" && id_post!="1" && isNaN(id_post)==false){
-  var check   = prompt('Ấn Ok nếu bạn muốn báo cáo bình luận này');
+  var check   = prompt('Ấn Ok nếu bạn muốn báo cáo bình luận này (hủy để báo cáo bài viết)');
   var id_cmt  = getIDCmt();
   if(id_cmt!="0"){
     var cmt_id  = (check!=null) ? "fb.com/"+id_cmt : "";
