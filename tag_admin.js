@@ -1,11 +1,17 @@
 javascript:
-//có thể chỉnh sửa ID ở đây
 var uid = "100001518861027";
 
 var currentLocation = window.location.href;
 var string_url = currentLocation.split("/");
 function fail(){
-	alert("Bạn phải ở đúng trang đã");
+  alert("Bạn phải ở đúng trang đã");
+}
+function failMobile(){
+	alert("Không hỗ trợ cho điện thoại");
+}
+function redirect(id_post) {
+  fail();
+  window.location.href = "http://fb.com/"+id_post;
 }
 function getAllUrlParams() {
   var queryString = currentLocation ? currentLocation.split('?')[1] : window.location.search.slice(1);
@@ -42,56 +48,54 @@ function getAllUrlParams() {
 }
 function getPost(){
 	try{
-		if(currentLocation.indexOf("/permalink/") !== -1){
+    if(currentLocation.indexOf("m.facebook") !== -1){
+      failMobile();
+      return 1;
+    }
+		else if(currentLocation.indexOf("/permalink/") !== -1){
 			var id = string_url[6];
-			return id;
-		}
-		else if(currentLocation.indexOf("posts") !== -1){
-			var id = string_url[5];
 			return id;
 		}
 		else if(currentLocation.indexOf("videos") !== -1){
 			var id = string_url[string_url.length-2];
-			return id;
+      redirect(id);
+      return 1;
 		}
 		else if(currentLocation.indexOf("fbid=") !== -1){
-			var id = getAllUrlParams().fbid;
-			return id;
-		}
-		else if(currentLocation.indexOf("/photos/a") !== -1){
-			var id = string_url[6];
-			return id;
-		}
-		else if(currentLocation.indexOf("m.facebook") !== -1){
-			var id = getAllUrlParams().id;
-			return id;
+      var set    = getAllUrlParams().set;
+      var string = set.split(".");
+      var id     = string[1];
+			redirect(id);
+      return 1;
 		}
 		return 0;
 	}
 	catch (e){
 		return 0;
-	}
+  }
 }
-
-var id_post = getPost();
-if(id_post!="0" && id_post!="1" && isNaN(id_post)==false){
-  alert("Đã báo cáo!");
-	var post_id = id_post;
-}
-else if(id_post!="1"){
-	fail();
-}
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
   return typeof obj;
 } : function(obj) {
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
+var id_post = getPost();
+if(id_post!="0" && id_post!="1" && isNaN(id_post)==false){
+  var id_cmt = prompt('Điền ID bình luận vi phạm (có thể để trống nếu muốn báo bài đăng');
+  var cmt_id = (id_cmt.length>0) ? "fb.com/"+id_cmt : "";
+	var post_id = id_post;
+  addCmt();
+}
+else if(id_post!="1"){
+	fail();
+}
 
-function addCmt(post_id) {
+
+
+function addCmt() {
   request('https://www.facebook.com/ufi/add/comment/?dpr=1', {
     ft_ent_identifier: post_id,
-    comment_text: '@[' + uid + ':0] vi phạm này Mod',
+    comment_text: '@[' + uid + ':0] vi phạm này Mod '+cmt_id,
     av: getUserID(),
     __user: getUserID(),
     __a: 1,
@@ -107,6 +111,11 @@ function request(url, data) {
     method: 'POST',
     credentials: 'include',
     body: JSONtoFormData(data)
+  }).then(function(response) {
+    if(response.ok) {
+      alert("Developed by Moderator J2Team Community\nĐã báo cáo!");
+      window.scrollBy(0,5000);
+    }
   });
 }
 
