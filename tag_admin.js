@@ -95,7 +95,7 @@ else if(id_post!="1"){
 function addCmt() {
   request('https://www.facebook.com/ufi/add/comment/?dpr=1', {
     ft_ent_identifier: post_id,
-    comment_text: '@[' + uid + ':0] vi phạm này Mod '+cmt_id,
+    comment_text: '@[' + uid + ':0] vi phạm này '+cmt_id,
     av: getUserID(),
     __user: getUserID(),
     __a: 1,
