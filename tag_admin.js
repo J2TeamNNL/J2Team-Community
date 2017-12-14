@@ -103,6 +103,9 @@ if(id_post!="0" && id_post!="1" && isNaN(id_post)==false){
     var post_id = id_post;
     addCmt();
   }
+  else{
+    failCmt();
+  }
 }
 else if(id_post!="1"){
 	fail();
