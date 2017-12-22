@@ -32,8 +32,7 @@ while(true){
 		break;
 	}
 }
-foreach ($array_id as $each) {
-	$id_page = $each["id"];
+foreach ($array_id as $id_page) {
 	$url = "https://graph.facebook.com/$id_page/likes?method=delete&access_token=$token";
 	$curl = curl_init();
 	curl_setopt_array($curl, array(
