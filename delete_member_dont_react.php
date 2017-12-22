@@ -8,7 +8,7 @@ $token = "EAA...";
 $id_group = "123";
 //điền id người được miễn, ví dụ như ở bên
 $array_avoid = ['123','345','567'];
-$url = "https://graph.facebook.com/$id_group/members?limit=500&fields=id&access_token=$token";
+$url = "https://graph.facebook.com/$id_group/members?limit=5000&fields=id&access_token=$token";
 $array_member = array();
 while(true){
 	$curl = curl_init();
