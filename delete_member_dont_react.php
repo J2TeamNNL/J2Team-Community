@@ -10,7 +10,6 @@ $id_group = "123";
 $array_avoid = ['123','345','567'];
 $url = "https://graph.facebook.com/$id_group/members?limit=500&fields=id&access_token=$token";
 $array_member = array();
-$i=0;
 while(true){
 	$curl = curl_init();
 	curl_setopt_array($curl, array(
@@ -29,10 +28,6 @@ while(true){
 	foreach ($array_fb as $each) {
 		array_push($array_member,$each['id']);
 	}
-	if($i==3){
-		break;
-	}
-	$i++;
 	if(!empty($response['paging']['next'])){
 		$url = $response['paging']['next'];
 	}
