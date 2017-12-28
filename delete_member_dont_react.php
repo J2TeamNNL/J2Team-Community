@@ -25,6 +25,9 @@ while(true){
 	if(isset($response["data"]) && count($response["data"])>0){
 		$array_fb = $response["data"];
 	}
+	else{
+		break;
+	}
 	foreach ($array_fb as $each) {
 		array_push($array_member,$each['id']);
 	}
