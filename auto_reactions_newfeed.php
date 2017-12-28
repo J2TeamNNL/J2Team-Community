@@ -42,4 +42,3 @@ foreach($datas as $each){
         }
     
 }
-?>
