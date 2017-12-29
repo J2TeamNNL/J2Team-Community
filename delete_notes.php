@@ -35,7 +35,7 @@ while(true){
 	}
 }
 $array_delete = array_diff($array, $array_avoid);
-foreach($array_dont_react as $each){
+foreach($array_delete as $each){
 	$link   = "https://graph.facebook.com/$each?method=delete&access_token=$token";
 	$curl   = curl_init();
 	curl_setopt_array($curl, array(
