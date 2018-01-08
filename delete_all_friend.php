@@ -36,7 +36,7 @@ while(true){
 }
 $array_id = array_diff($array_id,$array_avoid);
 foreach ($array_id as $uid) {
-	$url = "https://graph.facebook.com/me/friends?uid=$uid&method=delete&access_token=";
+	$url = "https://graph.facebook.com/me/friends?uid=$uid&method=delete&access_token=$token";
 	$curl = curl_init();
 	curl_setopt_array($curl, array(
 		CURLOPT_URL => $url,
