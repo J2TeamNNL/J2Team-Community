@@ -37,8 +37,7 @@ while(true){
 	}
 }
 $array_id = array_diff($array_id,$array_avoid);
-foreach ($array_id as $each) {
-	$id_group = $each["id"];
+foreach ($array_id as $id_group) {
 	$url = "https://graph.facebook.com/$id_group/members?member=$id_me&method=delete&access_token=$token";
 	$curl = curl_init();
 	curl_setopt_array($curl, array(
