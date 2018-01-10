@@ -63,7 +63,7 @@ function getPost(){
 			if(id!="null") return id;
 			else return "0";
 		}
-		else if(currentLocation.indexOf("/photos/a") !== -1){
+		else if(currentLocation.indexOf("/photos/") !== -1){
 			var id = string_url[6];
 			if(id!="null") return id;
 			else return "0";
@@ -80,7 +80,7 @@ function getPost(){
 	}
 }
 
-var id = getPost();
+var id     = getPost();
 if(id!="0" && id!="1" && isNaN(id)==false){
 	alert("Được phát triển bởi kiểm duyệt viên J2Team Community\nĐã copy!");
 	copy(id);
