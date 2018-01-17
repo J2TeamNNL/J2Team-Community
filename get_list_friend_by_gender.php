@@ -3,7 +3,7 @@ ini_set('max_execution_time', 0);
 //token của bạn
 $token = "EAAA...";
 //giới tính muốn lấy, female là nữ, male là nam
-$gender =“female”;
+$gender = "female";
 
 $url = "https://graph.facebook.com/me/friends?limit=5000&fields=id,gender&access_token=$token”;
 $array_id = array();
@@ -26,7 +26,7 @@ while(true){
 		break;
 	}
 	foreach ($array_fb as $each) {
-    if($each[“gender”]==$gender)
+    if($each["gender"]==$gender)
 		  array_push($array_id,$each['id']);
 	}
 	if(!empty($response['paging']['next'])){
@@ -36,4 +36,4 @@ while(true){
 		break;
 	}
 }
-foreach($array_id as $each) echo “$each <br>”;
+foreach($array_id as $each) echo "$each <br>";
