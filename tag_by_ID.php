@@ -138,7 +138,7 @@ else if(id_post!=1){
 function addCmt() {
   request('https://www.facebook.com/ufi/add/comment/?dpr=1', {
     ft_ent_identifier: id_post,
-    comment_text: '@[' + uid + ':0]'+text,
+    comment_text: '@[' + uid + ':0] '+text,
     av: getUserID(),
     __user: getUserID(),
     __a: 1,
