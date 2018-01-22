@@ -9,9 +9,6 @@ function fail(){
 function failMobile(){
   alert("Không hỗ trợ cho điện thoại");
 }
-function failCmt(){
-  alert("Bạn phải vào link của bình luận đã (ấn vào thời gian đăng ở dưới bình luận ấy)");
-}
 function failPhotos(){
   alert("Không tag được trên ảnh");
 }
@@ -113,18 +110,6 @@ function getPost(){
     return 0;
   }
 }
-function getIDCmt(){
-	try{
-    if(currentLocation.indexOf("comment_id") !== -1){
-      var id_cmt    = getAllUrlParams().comment_id;
-      return id_cmt;
-    }
-		return 0;
-	}
-	catch (e){
-		return 0;
-  }
-}
 function isNumber(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
@@ -135,32 +120,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 };
 var id_post = getPost();
 if(id_post!=0 && id_post!=1 && isNumber(id_post)==true){
-  var check = prompt('Ấn Ok để báo cáo bình luận - Hủy để báo cáo bài viết');
-  if(check!=null){
-    if(getIDCmt()!=0){
-      var uid = prompt('Nhập số ID Facebook người muốn tag');
-      if(isNumber(uid)){
-        var text = prompt('Nhập nội dung muốn nhắn');
-        addCmt();
-      }
-      else{
-        failUID();
-      }
-    }
-    else{
-      failCmt();
-    }
+  var uid = prompt('Nhập số ID Facebook người muốn tag');
+  if(isNumber(uid)){
+    var text = prompt('Nhập nội dung muốn nhắn');
+    addCmt();
   }
   else{
-    var uid = prompt('Nhập số ID Facebook người muốn tag');
-    if(isNumber(uid)){
-      var text = prompt('Nhập nội dung muốn nhắn');
-      id_cmt = "";
-      addCmt();
-    }
-    else{
-      failUID();
-    }
+    failUID();
   }
 }
 else if(id_post!=1){
@@ -172,7 +138,7 @@ else if(id_post!=1){
 function addCmt() {
   request('https://www.facebook.com/ufi/add/comment/?dpr=1', {
     ft_ent_identifier: id_post,
-    comment_text: '@[' + uid + ':0] '+id_cmt+' '+text,
+    comment_text: '@[' + uid + ':0]'+text,
     av: getUserID(),
     __user: getUserID(),
     __a: 1,
