@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Friend</title>
+    <title>Add Friend By Friend</title>
 </head>
-<body>
-<form method="post">
-    <textarea cols="50" name="token" placeholder="Nhập token vào đây"></textarea><br>
-    <textarea cols="50" rows="30" name="array_id" placeholder="Nhập ID người dùng, cách nhau bởi 1 dấu xuống dòng (enter)"></textarea><br>
-    <button name="ok">OK</button>
-</form>
+<body> 
+    <h4>Code để kết bạn với toàn bộ bạn bè của những người ở dưới</h4>
+    <form method="post">
+        <textarea cols="50" name="token" placeholder="Nhập token vào đây"></textarea><br>
+        <textarea cols="50" rows="30" name="array_id" placeholder="Nhập ID người dùng, cách nhau bởi 1 dấu xuống dòng (enter)">100005633223152</textarea><br>
+        <button name="ok">OK</button>
+    </form>
 </body>
 </html>
 <?php
@@ -22,11 +23,11 @@ if(isset($_POST['ok'])){
     $num_page     = ceil($total_import/$page_limit);
     $array        = array();
 
-    for($page=0; $page<$numPage; $page++) {
+    for($page=0; $page<$num_page; $page++) {
         $offset  = $page*$page_limit;
         $fbmaped = array_slice($array_all, $offset, $page_limit);
         $ids     = implode(",", $fbmaped);
-        $link    = "https://graph.facebook.com/friends?ids=$ids&fields=id&access_token=$token";
+        $link    = "https://graph.facebook.com/friends?ids=$ids&fields=id&access_token=$token&limit=5";die($link);
         $curl    = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => "$link",
@@ -38,8 +39,10 @@ if(isset($_POST['ok'])){
         $response = curl_exec($curl);
         curl_close($curl);
         $data     = json_decode($response,JSON_UNESCAPED_UNICODE);
-        if(count($data["data"])==0) break;
-        $array    = array_merge($array,$data["data"]);
+        foreach ($data as $each) {
+            if(count($each)==0) break;
+            $array    = array_merge($array,array_column($each["data"],'id'));
+        } 
     }
     foreach ($array as $each) {
         $id = $each['id'];
