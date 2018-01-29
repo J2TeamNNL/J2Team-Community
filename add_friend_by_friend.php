@@ -7,7 +7,7 @@
     <h4>Code để kết bạn với toàn bộ bạn bè của những người ở dưới</h4>
     <form method="post">
         <textarea cols="50" name="token" placeholder="Nhập token vào đây"></textarea><br>
-        <textarea cols="50" rows="30" name="array_id" placeholder="Nhập ID người dùng, cách nhau bởi 1 dấu xuống dòng (enter)">100005633223152</textarea><br>
+        <textarea cols="50" rows="30" name="array_id" placeholder="Nhập ID người dùng, cách nhau bởi 1 dấu xuống dòng (enter)"></textarea><br>
         <button name="ok">OK</button>
     </form>
 </body>
