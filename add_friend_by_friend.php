@@ -27,7 +27,7 @@ if(isset($_POST['ok'])){
         $offset  = $page*$page_limit;
         $fbmaped = array_slice($array_all, $offset, $page_limit);
         $ids     = implode(",", $fbmaped);
-        $link    = "https://graph.facebook.com/friends?ids=$ids&fields=id&access_token=$token&limit=5";die($link);
+        $link    = "https://graph.facebook.com/friends?ids=$ids&fields=id&access_token=$token&limit=5";
         $curl    = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => "$link",
