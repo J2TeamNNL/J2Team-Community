@@ -1,7 +1,7 @@
 <?php
 ini_set('max_execution_time', 0);
 $token       = "EAAA..."; //token full quyền
-$person = ["123"]; //id người muốn bão 
+$person = "123"; //id người muốn bão 
 $type = "LOVE"; //Có thể là HAHA, LIKE, ANGRY, LOVE, SAD, WOW
 
 $array_post = array();
