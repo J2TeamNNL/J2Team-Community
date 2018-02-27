@@ -13,17 +13,9 @@ while (true) {
     ));
     $reply = curl_exec($curls);
     curl_close($curls);
-    preg_match_all('/\w*\.torrent/', $reply, $matches[]);
-    if(curl_error($curls)){
-        break;
-    }
-    else{
-        $links = "https://nyaa.si/?f=0&c=1_0&q=&p=$page";
-        $page++;
-    }
-}
-foreach ($matches as $multi_array) {
-    foreach ($multi_array as $array) {
+    preg_match_all('/\w*\.torrent/', $reply, $matches);
+    print_r($matches);
+    foreach ($matches as $array) {
         foreach ($array as $each) {
             $fp = fopen ("download/$each" , 'w+');
             $links = "https://nyaa.si/download/$each";
@@ -38,5 +30,12 @@ foreach ($matches as $multi_array) {
             curl_exec($curls);
             curl_close($curls);
         }
+    }
+    if(curl_error($curls)){
+        break;
+    }
+    else{
+        $links = "https://nyaa.si/?f=0&c=1_0&q=&p=$page";
+        $page++;
     }
 }
