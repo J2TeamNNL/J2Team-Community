@@ -14,7 +14,6 @@ while (true) {
     $reply = curl_exec($curls);
     curl_close($curls);
     preg_match_all('/\w*\.torrent/', $reply, $matches);
-    print_r($matches);
     foreach ($matches as $array) {
         foreach ($array as $each) {
             $fp = fopen ("download/$each" , 'w+');
