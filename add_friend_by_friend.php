@@ -44,8 +44,7 @@ if(isset($_POST['ok'])){
             $array    = array_merge($array,array_column($each["data"],'id'));
         } 
     }
-    foreach ($array as $each) {
-        $id = $each['id'];
+    foreach ($array as $id) {
         $link    = "https://graph.facebook.com/me/friends?uid=$id&access_token=$token";
         $curl    = curl_init();
         curl_setopt_array($curl, array(
