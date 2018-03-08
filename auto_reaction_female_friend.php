@@ -20,6 +20,7 @@ curl_setopt_array($curls, array(
 $reply = curl_exec($curls);
 curl_close($curls);
 $data  = json_decode($reply,JSON_UNESCAPED_UNICODE);
+$data = $data['data'];
 foreach($data as $each){
     if($each['gender']=='female') $array_person[] = $each['id'];
 }
