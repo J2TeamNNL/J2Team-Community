@@ -13,15 +13,14 @@ $curls = curl_init();
 curl_setopt_array($curls, array(
 	CURLOPT_URL => $links,
 	CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_SSL_VERIFYPEER => false,
-    CURLOPT_SSL_VERIFYHOST => false
+	CURLOPT_TIMEOUT => 0,
+	CURLOPT_SSL_VERIFYPEER => false,
+	CURLOPT_SSL_VERIFYHOST => false
 ));
 $reply = curl_exec($curls);
 curl_close($curls);
 $data  = json_decode($reply,JSON_UNESCAPED_UNICODE);
-$datas = $data["data"];
-foreach($datas as $each){
+foreach($data as $each){
     if($each['gender']=='female') $array_person[] = $each['id'];
 }
 foreach($array_person as $each){
@@ -31,9 +30,9 @@ foreach($array_person as $each){
     curl_setopt_array($curls, array(
       CURLOPT_URL => $links,
       CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_SSL_VERIFYHOST => false
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_SSL_VERIFYPEER => false,
+      CURLOPT_SSL_VERIFYHOST => false
     ));
     $reply = curl_exec($curls);
     curl_close($curls);
