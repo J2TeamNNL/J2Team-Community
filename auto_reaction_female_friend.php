@@ -22,7 +22,8 @@ curl_close($curls);
 $data  = json_decode($reply,JSON_UNESCAPED_UNICODE);
 $data = $data['data'];
 foreach($data as $each){
-    if($each['gender']=='female') $array_person[] = $each['id'];
+	
+    if(isset($each['gender']) && $each['gender']=='female') $array_person[] = $each['id'];
 }
 foreach($array_person as $each){
   if(!in_array($each,$person_avoid)){
