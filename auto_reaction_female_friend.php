@@ -23,10 +23,10 @@ $data  = json_decode($reply,JSON_UNESCAPED_UNICODE);
 $data = $data['data'];
 foreach($data as $each){
 	
-    if(isset($each['gender']) && $each['gender']=='female') $array_person[] = $each['id'];
+	if(isset($each['gender']) && $each['gender']=='female') $array_person[] = $each['id'];
 }
 foreach($array_person as $each){
-  if(!in_array($each,$person_avoid)){
+  if(!in_array($each,$array_avoid)){
     $links = "https://graph.facebook.com/$each/feed?order=chronological&limit=$limit&fields=id&access_token=$token";
     $curls = curl_init();
     curl_setopt_array($curls, array(
