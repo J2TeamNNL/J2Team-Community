@@ -6,8 +6,8 @@
 <body> 
     <h4>Code để kết bạn với toàn bộ bạn bè của những người ở dưới</h4>
     <form method="post">
-        <textarea cols="50" name="token" placeholder="Nhập token vào đây"></textarea><br>
-        <textarea cols="50" rows="30" name="array_id" placeholder="Nhập ID người dùng, cách nhau bởi 1 dấu xuống dòng (enter)"></textarea><br>
+        <textarea cols="50" name="token" placeholder="Nhập token vào đây"><?php if(isset($_POST['ok'])){ echo $_POST['token']; } ?></textarea><br>
+        <textarea cols="50" rows="30" name="array_id" placeholder="Nhập ID người dùng, cách nhau bởi 1 dấu xuống dòng (enter)"><?php if(isset($_POST['ok'])){ echo $_POST['array_id']; }?></textarea><br>
         <button name="ok">OK</button>
     </form>
 </body>
@@ -27,21 +27,21 @@ if(isset($_POST['ok'])){
         $offset  = $page*$page_limit;
         $fbmaped = array_slice($array_all, $offset, $page_limit);
         $ids     = implode(",", $fbmaped);
-        $link    = "https://graph.facebook.com/friends?ids=$ids&fields=id&access_token=$token&limit=5";
-        $curl    = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "$link",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false
+        $link    = "https://graph.facebook.com/friends?ids=$ids&fields=id&access_token=$token&limit=5000";
+        $curls = curl_init();
+        curl_setopt_array($curls, array(
+        	CURLOPT_URL => $link,
+        	CURLOPT_RETURNTRANSFER => true,
+        	CURLOPT_TIMEOUT => 0,
+        	CURLOPT_SSL_VERIFYPEER => false,
+        	CURLOPT_SSL_VERIFYHOST => false
         ));
-        $response = curl_exec($curl);
-        curl_close($curl);
-        $data     = json_decode($response,JSON_UNESCAPED_UNICODE);
+        $reply = curl_exec($curls);
+        curl_close($curls);
+        $data     = json_decode($reply,JSON_UNESCAPED_UNICODE);
         foreach ($data as $each) {
             if(count($each)==0) break;
-            $array    = array_merge($array,array_column($each["data"],'id'));
+            $array = array_merge($array,array_column($each["data"],'id'));
         } 
     }
     foreach ($array as $id) {
@@ -58,7 +58,6 @@ if(isset($_POST['ok'])){
         curl_exec($curl);
         curl_close($curl);
         echo "Đã kết bạn với $id<br>";
-        sleep(5);
     }
     
 }
