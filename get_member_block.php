@@ -1,9 +1,9 @@
 <?php
 ini_set('max_execution_time', 0);
-//token người không bị chặn (có thể là thành viên nhóm bình thường)
-$token   = "EAAAA";
 //token bạn
-$token_admin = "EAAA";
+$token   = "EAAAA";
+
+
 //điền ID nhóm
 $id_nhom = "364997627165697";
 
@@ -41,7 +41,7 @@ for($page=0; $page<$numPage; $page++) {
   $offset   = $page*$pageLimit;
   $fbmaped  = array_slice($array_member_true, $offset, $pageLimit);
   $ids      = implode(",", $fbmaped);
-  $link     = "https://graph.facebook.com/?fields=id&ids=$ids&access_token=$token_admin";
+  $link     = "https://graph.facebook.com/?fields=id&ids=$ids&access_token=$token";
   $curl    = curl_init();
   curl_setopt_array($curl, array(
       CURLOPT_URL => $link,
