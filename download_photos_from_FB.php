@@ -1,12 +1,12 @@
 <?php
 ini_set('max_execution_time', 0);
 //token bạn
-$token = "EAAA";
-//điền ID page hoặc ID cá nhân
-$id = "";
+$token = "EAAAA";
+//điền ID page
+$id_page = "123";
 
 //không sửa ở dưới
-$link    = "https://graph.facebook.com/$id/albums?fields=id&limit=100&access_token=$token"; 
+$link    = "https://graph.facebook.com/$id_page/albums?fields=id&limit=100&access_token=$token"; 
 $array_album = array();
 while (true) {
     $curl    = curl_init();
@@ -62,6 +62,7 @@ foreach ($array_album as $id_album) {
         ));
         curl_exec($curls);
         curl_close($curls);
+        fclose($fp);
     }
     if(!empty($data["paging"]["next"])){
         $link = $data["paging"]["next"];
