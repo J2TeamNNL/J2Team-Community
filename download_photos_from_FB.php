@@ -2,11 +2,11 @@
 ini_set('max_execution_time', 0);
 //token bạn
 $token = "EAAAA";
-//điền ID page
-$id_page = "123";
+//điền ID trang page hoặc cá nhân profile
+$id ="123";
 
 //không sửa ở dưới
-$link    = "https://graph.facebook.com/$id_page/albums?fields=id&limit=100&access_token=$token"; 
+$link    = "https://graph.facebook.com/$id/albums?fields=id&limit=100&access_token=$token"; 
 $array_album = array();
 while (true) {
     $curl    = curl_init();
