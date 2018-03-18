@@ -33,7 +33,7 @@ while (true) {
     }
 } 
 foreach ($array_album as $id_album) {
-  $link    = "https://graph.facebook.com/$id_album/photos?fields=images&limit=100&access_token=$token";
+  $link    = "https://graph.facebook.com/$id_album/photos?fields=images.source&limit=100&access_token=$token";
   while (true) {
     $curl    = curl_init();
     curl_setopt_array($curl, array(
@@ -51,7 +51,7 @@ foreach ($array_album as $id_album) {
     foreach($datas as $each){
         $id    = $each['id'];
         $fp    = fopen ("download/$id.jpg" , 'w+');
-        $links = $each['images'][0];
+        $links = $each['images'][0]['source'];
         $curls = curl_init();
         curl_setopt_array($curls, array(
             CURLOPT_URL => $links,
