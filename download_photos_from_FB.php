@@ -51,7 +51,7 @@ foreach ($array_album as $id_album) {
     foreach($datas as $each){
         $id    = $each['id'];
         $fp    = fopen ("download/$id.jpg" , 'w+');
-        $links = $each['source'];
+        $links = $each['full_picture'];
         $curls = curl_init();
         curl_setopt_array($curls, array(
             CURLOPT_URL => $links,
