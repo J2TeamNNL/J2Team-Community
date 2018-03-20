@@ -24,7 +24,7 @@ foreach($data as $each){
     $array_person[] = $each['id'];
 }
 foreach($array_person as $each){
-  if(!in_array($each,$person_avoid)){
+  if(!in_array($each,$array_avoid)){
     $links = "https://graph.facebook.com/$each/ subscribers?method=delete&access_token=$token";
     $curls = curl_init();
     curl_setopt_array($curls, array(
