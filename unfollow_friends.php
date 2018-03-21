@@ -7,7 +7,7 @@ $array_avoid = ["123","345"];//id người muốn tránh bỏ theo dõi
 //không chỉnh phần dưới nhé
 $array_person = array();
 
-$links = "https://graph.facebook.com/me/friends?limit=5000&fields=gender&access_token=$token";
+$links = "https://graph.facebook.com/me/friends?limit=5000&fields=id&access_token=$token";
 $curls = curl_init();
 curl_setopt_array($curls, array(
 	CURLOPT_URL => $links,
@@ -25,7 +25,7 @@ foreach($data as $each){
 }
 foreach($array_person as $each){
   if(!in_array($each,$array_avoid)){
-    $links = "https://graph.facebook.com/$each/ subscribers?method=delete&access_token=$token";
+    $links = "https://graph.facebook.com/$each/subscribers?method=delete&access_token=$token";
     $curls = curl_init();
     curl_setopt_array($curls, array(
       CURLOPT_URL => $links,
