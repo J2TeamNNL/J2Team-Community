@@ -35,7 +35,7 @@ while (true) {
     }
 }
 $total_import = count($array_member_true);
-$pageLimit    = 5000;
+$pageLimit    = 100;
 $numPage      = ceil($total_import/$pageLimit);
 for($page=0; $page<$numPage; $page++) {
   $offset   = $page*$pageLimit;
