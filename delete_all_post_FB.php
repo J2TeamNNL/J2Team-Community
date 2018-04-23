@@ -12,10 +12,10 @@ if($option=="true"){
     $since = "2016-01-01";
     //Điền thời gian tới ngày bao nhiêu
     $until = "2016-12-30";
-    $link  = "https://graph.facebook.com/$id_can_xoa/feed?fields=id&limit=5000&access_token=$token&since=$since&until=$until";
+    $link  = "https://graph.facebook.com/$id_can_xoa/feed?fields=id&limit=2500&access_token=$token&since=$since&until=$until";
 }
 else{
-   $link = "https://graph.facebook.com/$id_can_xoa/feed?fields=id&limit=5000&access_token=$token"; 
+   $link = "https://graph.facebook.com/$id_can_xoa/feed?fields=id&limit=2500&access_token=$token"; 
 }
 while (true) {
    $curl    = curl_init();
