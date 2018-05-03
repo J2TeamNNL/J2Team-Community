@@ -45,6 +45,6 @@ if(isset($_POST['ok'])){
         curl_exec($curl);
         curl_close($curl);
         echo "Đã gửi kết bạn với <a href='https://fb.com/$id' target='_blank'>$id</a><br>";
-        sleep(random(2,10);
+        sleep(rand(2,10);
     }
 }
