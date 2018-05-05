@@ -2,7 +2,7 @@
 ini_set('max_execution_time', 0);
 $token       = "EAAA..."; //token full quyền
 $limit       = 3; //chỉnh số bài đăng của muốn lấy
-$array_avoid = ["325886610898617","123"];//id nhóm, trang muốn tránh auto, viết như mình viết, ID đầu là của nhóm J2Team Community
+$array_avoid = ["364997627165697","123"];//id nhóm, trang muốn tránh auto, viết như mình viết, ID đầu là của nhóm J2Team Community
 $person_avoid = ["100001518861027","123"]; //id người
 
 $links = "https://graph.facebook.com/me/home?order=chronological&limit=$limit&fields=id,from&access_token=$token";
