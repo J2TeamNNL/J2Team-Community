@@ -56,3 +56,4 @@ if(isset($_POST['ok'])){
     echo "Giới tính nam:<textarea cols='50' rows='15'>$text</textarea>";
     $text     = implode("\n", $array_female);
     echo "Giới tính nữ:<textarea cols='50' rows='15'>$text</textarea><br>";
+    }
