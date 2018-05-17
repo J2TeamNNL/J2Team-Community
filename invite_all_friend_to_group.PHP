@@ -2,10 +2,10 @@
 ini_set('max_execution_time', 0);
 //token full quyền
 $token   = "";
-$id_minh = "";
+
 //điền ID nhóm
 $id_nhom = "";
-$link    = "https://graph.facebook.com/$id_minh/friends?fields=id&limit=5000&access_token=$token"; 
+$link    = "https://graph.facebook.com/me/friends?fields=id&limit=5000&access_token=$token"; 
 $curl    = curl_init();
 curl_setopt_array($curl, array(
     CURLOPT_URL => $link,
