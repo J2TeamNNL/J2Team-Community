@@ -32,11 +32,11 @@ if(isset($_POST['ok'])){
     $data      = $data['data'];
     $array_all = array_column($data, "id");
     foreach ($array_all as $id) {
-        $link    = "https://graph.facebook.com/me/friends?uid=$id&access_token=$token";
+        $link    = "https://graph.facebook.com/me/friends?method=post&uid=$id&access_token=$token";
         $curl    = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $link,
-            CURLOPT_POST => true,
+
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_SSL_VERIFYPEER => false,
