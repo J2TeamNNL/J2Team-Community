@@ -49,5 +49,5 @@ if(isset($_POST['ok'])){
     foreach ($array as $id => $username) {
         $text .= "$id: $username\n";
     }
-    echo "Username:<textarea cols='50' rows='15'>$text</textarea>";
+    echo "<textarea cols='50' rows='15'>$text</textarea>";
 }
