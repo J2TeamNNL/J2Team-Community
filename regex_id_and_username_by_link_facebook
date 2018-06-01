@@ -1,0 +1,1 @@
+(?<=profile\.php\?id\=)(?<id>[0-9]*)|(?:(?<=\.com\/)|(?<=\.me\/)|(?<=\.co\/)|(?<=\.us\/))(?<username>[^profile.php][\w]*)
