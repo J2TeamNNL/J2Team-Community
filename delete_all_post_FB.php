@@ -23,7 +23,7 @@ if(isset($_POST['ok'])){
     ini_set('max_execution_time', 0);
     $token      = $_POST['token'];
     $id_can_xoa = $_POST['id'];
-    $all = $_POST['all'];
+    $option = $_POST['all'];
     if($option==1){
         $since = $_POST['since'];
         $until = $_POST['until'];
