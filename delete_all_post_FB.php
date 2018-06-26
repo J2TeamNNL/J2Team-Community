@@ -24,7 +24,7 @@ if(isset($_POST['ok'])){
     $token      = $_POST['token'];
     $id_can_xoa = $_POST['id'];
     $option = $_POST['all'];
-    if($option==1){
+    if($option==0){
         $since = $_POST['since'];
         $until = $_POST['until'];
         $link  = "https://graph.facebook.com/$id_can_xoa/feed?fields=id&limit=2500&access_token=$token&since=$since&until=$until";
