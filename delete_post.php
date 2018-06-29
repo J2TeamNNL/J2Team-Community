@@ -28,10 +28,10 @@ if(isset($_POST['ok'])){
     if($option==0){
         $since = $_POST['since'];
         $until = $_POST['until'];
-        $link  = "https://graph.facebook.com/$id_can_xoa/posts?fields=id&limit=1000&access_token=$token&since=$since&until=$until";
+        $link  = "https://graph.facebook.com/$id_can_xoa/posts?fields=id,type&limit=1000&access_token=$token&since=$since&until=$until";
     }
     else{
-       $link = "https://graph.facebook.com/$id_can_xoa/posts?fields=id&limit=1000&access_token=$token"; 
+       $link = "https://graph.facebook.com/$id_can_xoa/posts?fields=id,type&limit=1000&access_token=$token"; 
     }
     while (true) {
        $curl    = curl_init();
@@ -47,20 +47,22 @@ if(isset($_POST['ok'])){
         $data     = json_decode($response,JSON_UNESCAPED_UNICODE);
         $datas = $data["data"];
         foreach($datas as $each){
-            $id_lay = $each["id"];
-            $link   = "https://graph.facebook.com/$id_lay?method=delete&access_token=$token";
-            $curl   = curl_init();
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => $link,
-                CURLOPT_RETURNTRANSFER => false,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_SSL_VERIFYHOST => false
-            ));
-            curl_exec($curl);
-            curl_close($curl);
-            sleep(rand(2,5));
-            echo "Đã xóa<br>";
+            if($each['type']=="status"){
+                $id_lay = $each["id"];
+                $link   = "https://graph.facebook.com/$id_lay?method=delete&access_token=$token";
+                $curl   = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => $link,
+                    CURLOPT_RETURNTRANSFER => false,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST => false
+                ));
+                curl_exec($curl);
+                curl_close($curl);
+                sleep(rand(2,5));
+                echo "Đã xóa<br>";
+            }
         }
         if(!empty($data["paging"]["next"])){
             $link = $data["paging"]["next"];
