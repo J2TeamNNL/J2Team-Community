@@ -1,4 +1,5 @@
 
+
 javascript:
 
 var currentLocation = window.location.href;
@@ -156,7 +157,7 @@ function request(url, data) {
     body: JSONtoFormData(data)
   }).then(function(response) {
     if(response.ok) {
-      window.scrollBy(0,5000);
+      window.scrollTo(0,document.body.scrollHeight);
     }
   });
 }
