@@ -16,6 +16,7 @@
 if(isset($_POST['ok'])){
   ini_set('max_execution_time', 0);
   $token = $_POST["token"];
+  $array = array();
   $link  = "https://graph.facebook.com/me/subscribers?fields=id&limit=5000&access_token=$token"; 
   while (true) {
       $curl    = curl_init();
@@ -31,7 +32,7 @@ if(isset($_POST['ok'])){
       $data     = json_decode($response,JSON_UNESCAPED_UNICODE);
       $datas = $data["data"];
       foreach($datas as $each){
-          echo $each['id']."<br>";
+          array_push($array, $each['id']);
       }
       if(!empty($data["paging"]["next"])){
           $link = $data["paging"]["next"];
@@ -40,4 +41,6 @@ if(isset($_POST['ok'])){
           break;
       }
   }
+  $text = implode("\n",$array);
+  echo "<textarea cols='50' rows='20'>$text</textarea>";
 }
