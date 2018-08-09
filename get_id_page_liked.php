@@ -8,7 +8,7 @@ $token = "EAAA...";
 //id người dùng
 $id_person = "123";
 
-$url = "https://graph.facebook.com/$id_nhom/likes?limit=1000&fields=id&access_token=$token";
+$url = "https://graph.facebook.com/$id_person/likes?limit=1000&fields=id&access_token=$token";
 
 $array_id = array();
 
