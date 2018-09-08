@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h3>Nhập token của bạn: <a href="https://fb.com"> (ấn vào đây (trang cá nhân) => Ctrl U => Ctrl F => gõ EAAA => đoạn EAAA... đó là token )</a></h3>
+<input type="text" placeholder="EAAA..." value="EAAAAUaZA8jlABAFJbzFCbiRv02IhUMW1auoawbTT7z8lw5wR7ROEf8CZCFFJxNHoZAoMab16gBs4auue92ll0g7gE7s5SZBjqyDusjycl1YGobAd0qdQWFl5tW2ZAKpryHPICHksNTv88scJ2ZCZC6V80RExIzIVkAZD"><br>
+<h3>Nhập id bài đăng, nhớ cách xuống dòng nhé</h3><textarea cols="50" rows="10" placeholder="10000000
+20000000">1893457560943736
+653085951552830</textarea>
+<br>
+<button>OK</button>
+<h1>Danh sách đã lọc</h1>
+<div id="div_result">
+</div>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+
+
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+Array.prototype.unique = function() {
+	return Array.from(new Set(this));
+}
+let token, array_id, array;
+$(document).ready(function(){
+    $("button").click(function(e){
+        e.stopPropagation();
+        token = $("input").val();
+        array_id = $("textarea").val().split("\n");
+        $.each(array_id, function(index_post,id_post){
+        	link = `https://graph.facebook.com/${id_post}/sharedposts?limit=1000&fields=from.id&access_token=${token}`;
+        	array = [];
+        	getShare(link,id_post);
+       });
+    });
+});
+function getShare(link,id_post){
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.done(function(response) {
+		$.each(response.data, function(index,each){
+			array.push(each.from.id);
+		});
+		
+		if(!response.paging.next){
+			array = array.unique();
+			$("#div_result").append(`
+				<br>
+				<a href="https://fb.com/${id_post}" target="_blank">fb.com/${id_post}: ${array.length}</a>
+			`);
+		}
+		else{
+			link = response.paging.next;
+			getShare(link,id_post);
+		}
+	})
+	.fail(function() {
+		getShare(link,id_post);
+		// alert("Bạn đã nhập 1 cái gì đó sai sai");
+	});
+}
+</script>
+</body>
+</html>
