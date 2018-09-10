@@ -21,7 +21,7 @@
 Array.prototype.unique = function() {
 	return Array.from(new Set(this));
 }
-let token, array_id, array;
+let token, array_id, array = [];
 $(document).ready(function(){
     $("button").click(function(e){
         e.stopPropagation();
@@ -29,7 +29,7 @@ $(document).ready(function(){
         array_id = $("textarea").val().split("\n");
         $.each(array_id, function(index_post,id_post){
         	link = `https://graph.facebook.com/${id_post}/sharedposts?limit=1000&fields=from.id&access_token=${token}`;
-        	array = [];
+        	array[id_post] = [];
         	getShare(link,id_post);
        });
     });
@@ -41,26 +41,19 @@ function getShare(link,id_post){
 	})
 	.done(function(response) {
 		$.each(response.data, function(index,each){
-			array.push(each.from.id);
+			array[id_post].push(each.from.id);
 		});
-		if(!respone.paging){
-			if(!response.paging.next){
-				array = array.unique();
-				$("#div_result").append(`
-					<br>
-					<a href="https://fb.com/${id_post}" target="_blank">fb.com/${id_post}: ${array.length}</a>
-				`);
-			}
-			else{
-				link = response.paging.next;
-				getShare(link,id_post);
-			}
+		
+		if(!response.paging.next){
+			array_unique = array[id_post].unique();
+			$("#div_result").append(`
+				<br>
+				<a href="https://fb.com/${id_post}" target="_blank">fb.com/${id_post}: ${array_unique.length}</a>
+			`);
 		}
 		else{
-			$("#div_result").append(`
-					<br>
-					<a href="https://fb.com/${id_post}" target="_blank">fb.com/${id_post}: 0</a>
-				`);
+			link = response.paging.next;
+			getShare(link,id_post);
 		}
 	})
 	.fail(function() {
