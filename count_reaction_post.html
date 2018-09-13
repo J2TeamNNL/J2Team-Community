@@ -5,32 +5,54 @@
 </head>
 <body>
 <h3>Nhập token của bạn: <a href="https://fb.com" target="_blank"> (ấn vào đây (trang cá nhân) => Ctrl U => Ctrl F => gõ EAAA => đoạn EAAA... đó là token )</a></h3>
-<input type="text" id="token" placeholder="EAAA..." value=""><br>
+<input type="text" id="token" placeholder="EAAA..." value="EAAAAUaZA8jlABAOYJAEnyfuRkZA11AJtBEIHLDoJxfJEL9B2cYl68IFSGXPZAUZC8ymZCKBTDOFkvETkzMGo7vHPgU48mW5X1gGzIXzjJZAPdo81qGksf9SZBC7kYrrnsoDtpm64Auq9wh8JZBMUGhaL7cLj60qetPvka94CZAdDwjohH8BzClYL5"><br>
 <h3>Nhập id trang (hoặc nhóm, hoặc cá nhân): <a href="https://findmyfbid.com" target="_blank">Tìm trên findmyfbid.com</a></h3>
-<input type="number" id="id_object" placeholder="1000...." value=""><br>
-<h3>Nhập id bài đăng, nhớ cách xuống dòng nhé</h3><textarea cols="50" rows="10" placeholder="10000000
-20000000"></textarea>
+<input type="number" id="id_object" placeholder="1000...." value="364997627165697"><br>
+<h3>Nhập id bài đăng, mỗi id xuống dòng nhé</h3><textarea cols="50" rows="10" placeholder="10000000
+20000000">797178813947574
+799752190356903</textarea>
 <br>
 <button>OK</button>
 <h1>Danh sách đã lọc</h1>
-<div id="div_result">
-</div>
+<table>
+	<thead>
+		<th>
+			STT
+		</th>
+		<th>
+			ID Bài Đăng
+		</th>
+		<th>
+			Like
+		</th>
+		<th>
+			Comment
+		</th>
+		<th>
+			Share
+		</th>
+	</thead>
+</table>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 
 
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>	
 <script>
 Array.prototype.unique = function() {
 	return Array.from(new Set(this));
 }
-let token, id_object, array_id, array_share = [], array_like = [], array_comment = [], array_unique = [], activeAjaxConnections = [];
+let token, id_object, array_id, array_index = [], array_share = [], array_like = [], array_comment = [], array_unique = [], activeAjaxConnections = [], index_post = 0;
+var t = $('table').DataTable();
 $(document).ready(function(){
     $("button").click(function(e){
         e.stopPropagation();
 		token     = $("#token").val();
 		id_object = $("#id_object").val();
 		array_id  = $("textarea").val().split("\n");
-        $.each(array_id, function(index_post,id_post){
+        $.each(array_id, function(index,id_post){
         	id_post = `${id_object}_${id_post}`;
         	link = `https://graph.facebook.com/${id_post}/sharedposts?limit=1000&fields=from.id&access_token=${token}`;
         	array_share[id_post] = [];
@@ -114,10 +136,14 @@ function getComment(id_post){
 }
 function getResult(id_post){
 	array_unique = array_share[id_post].unique();
-	$("#div_result").append(`
-		<br>
-		<a href="https://fb.com/${id_post}" target="_blank">fb.com/${id_post}: ${array_like[id_post]} likes / ${array_comment[id_post]} comments / ${array_unique.length} shares</a>
-	`);
+	index_post++;
+	t.row.add( [
+        index_post,
+        `<a href="https://fb.com/${id_post}" target="_blank">fb.com/${id_post}</a>`,
+        array_like[id_post],
+        array_comment[id_post],
+        array_unique.length
+    ] ).draw( true );
 }
 </script>
 </body>
