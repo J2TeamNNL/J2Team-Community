@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Count Reaction Post</title>
+</head>
+<body>
+<h3>Nhập token của bạn: <a href="https://fb.com" target="_blank"> (ấn vào đây (trang cá nhân) => Ctrl U => Ctrl F => gõ EAAA => đoạn EAAA... đó là token )</a></h3>
+<input type="text" id="token" placeholder="EAAA..." value=""><br>
+<h3>Nhập id trang (hoặc nhóm, hoặc cá nhân): <a href="https://findmyfbid.com" target="_blank">Tìm trên findmyfbid.com</a></h3>
+<input type="number" id="id_object" placeholder="1000...." value=""><br>
+<h3>Nhập id bài đăng, nhớ cách xuống dòng nhé</h3><textarea cols="50" rows="10" placeholder="10000000
+20000000"></textarea>
+<br>
+<button>OK</button>
+<h1>Danh sách đã lọc</h1>
+<div id="div_result">
+</div>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+
+
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+Array.prototype.unique = function() {
+	return Array.from(new Set(this));
+}
+let token, id_object, array_id, array_share = [], array_like = [], array_comment = [], array_unique = [], activeAjaxConnections = [];
+$(document).ready(function(){
+    $("button").click(function(e){
+        e.stopPropagation();
+		token     = $("#token").val();
+		id_object = $("#id_object").val();
+		array_id  = $("textarea").val().split("\n");
+        $.each(array_id, function(index_post,id_post){
+        	id_post = `${id_object}_${id_post}`;
+        	link = `https://graph.facebook.com/${id_post}/sharedposts?limit=1000&fields=from.id&access_token=${token}`;
+        	array_share[id_post] = [];
+        	array_like[id_post] = 0;
+        	array_comment[id_post] = 0;
+        	activeAjaxConnections[id_post] = 3;
+        	getShare(link,id_post);
+        	getLike(id_post);
+        	getComment(id_post);
+       });
+    });
+});
+function getShare(link,id_post){
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		$.each(response.data, function(index,each){
+			array_share[id_post].push(each.from.id);
+		});
+		if(response.paging){
+			if(response.paging.next){
+				link = response.paging.next;
+				getShare(link,id_post);
+			}
+			else{
+				activeAjaxConnections[id_post]--;
+				if(activeAjaxConnections[id_post]==0){
+					getResult(id_post);
+				}
+			}
+		}
+		else{
+			activeAjaxConnections[id_post]--;
+			if(activeAjaxConnections[id_post]==0){
+				getResult(id_post);
+			}
+		}
+	})
+	.fail(function() {
+		getShare(link,id_post);
+		// alert("Bạn đã nhập 1 cái gì đó sai sai");
+	});
+}
+function getLike(id_post){
+	link = `https://graph.facebook.com/${id_post}/reactions?limit=1&fields=id&summary=true&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		if(response.summary){
+			array_like[id_post] = response.summary.total_count;
+		}
+		activeAjaxConnections[id_post]--;
+		if(activeAjaxConnections[id_post]==0){
+			getResult(id_post);
+		}
+	})
+	.fail(function() {
+		getLike(id_post);
+		// alert("Bạn đã nhập 1 cái gì đó sai sai");
+	});
+}
+function getComment(id_post){
+	link = `https://graph.facebook.com/${id_post}?fields=comments&summary=true&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		if(response.comments){
+			array_comment[id_post] = response.comments.count;
+		}
+		activeAjaxConnections[id_post]--;
+		if(activeAjaxConnections[id_post]==0){
+			getResult(id_post);
+		}
+	})
+}
+function getResult(id_post){
+	array_unique = array_share[id_post].unique();
+	$("#div_result").append(`
+		<br>
+		<a href="https://fb.com/${id_post}" target="_blank">fb.com/${id_post}: ${array_like[id_post]} likes / ${array_comment[id_post]} comments / ${array_unique.length} shares</a>
+	`);
+}
+</script>
+</body>
+</html>
