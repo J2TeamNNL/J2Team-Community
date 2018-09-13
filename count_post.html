@@ -52,6 +52,7 @@ $(document).ready(function(){
 		id_object = $("#id_object").val();
 		array_id  = $("textarea").val().split("\n");
         $.each(array_id, function(index,id_post){
+        	array_index[id_post] = index_post++;
         	id_post = `${id_object}_${id_post}`;
         	link = `https://graph.facebook.com/${id_post}/sharedposts?limit=1000&fields=from.id&access_token=${token}`;
         	array_share[id_post] = [];
@@ -135,9 +136,8 @@ function getComment(id_post){
 }
 function getResult(id_post){
 	array_unique = array_share[id_post].unique();
-	index_post++;
 	t.row.add( [
-        index_post,
+        array_index[id_post],
         `<a href="https://fb.com/${id_post}" target="_blank">fb.com/${id_post}</a>`,
         array_like[id_post],
         array_comment[id_post],
