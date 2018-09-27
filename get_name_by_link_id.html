@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Get Name By Link ID</title>
+	<meta charset="utf-8">
+</head>
+<body>
+<h3>Nhập token của bạn: <a href="https://fb.com" target="_blank"> (ấn vào đây (trang cá nhân) => Ctrl U => Ctrl F => gõ EAAA => đoạn EAAA... đó là token )</a></h3>
+<input type="text" id="token" placeholder="EAAA..." value=""><br>
+<div style="width: 50%;float: left">
+<h1>Nhập link id trang (hoặc nhóm, hoặc cá nhân) <br>Mỗi id xuống dòng nhé</h1><textarea cols="50" rows="10" placeholder="fb.com/10000000
+  fb.com/20000000"></textarea>
+<button>OK</button>
+</div>
+<div style="width: 50%;float: left">
+<h1>Danh sách đã lọc</h1><br><br>
+<textarea rows="10" cols="50" id="result"></textarea>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+  let token, array_id,id;
+  var patt = new RegExp("(?!\.com\/)[0-9]+");
+  $(document).ready(function(){
+    $("button").click(function(e){
+      e.stopPropagation();
+      token     = $("#token").val();
+      array_link_id  = $("textarea").val().split("\n");
+      $.each(array_link_id, function(index,link_id){
+        id = patt.exec(link_id);
+        link = `https://graph.facebook.com/${id[0]}?fields=name&access_token=${token}`;
+        $.ajax({
+            url: link,
+            dataType: 'json',
+        })
+        .success(function(response) {
+          $("#result").append(`${response.name}\n`);
+        })
+        .fail(function() {
+          alert("Bạn đã nhập 1 cái gì đó sai sai");
+        });
+      });
+    });
+  });
+</script>
+</body>
+</html>
