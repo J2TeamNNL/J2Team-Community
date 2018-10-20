@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Spam Female Wall</title>
+	<meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container form-horizontal">
+		<h1>Spam Female Wall</h1>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="token">Token:</label>
+	      <div class="col-sm-10">
+	        <input type="text" class="form-control" id="token" placeholder="EAAA...">
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="text">Lời nhắn:</label>
+	      <div class="col-sm-10">
+	        <textarea class="form-control" id="text" placeholder="Chúc mừng"></textarea>
+	      </div>
+	    </div>
+	    <div class="form-group" align="center">
+		    <button class="btn btn-danger">Spam nào</button>
+		</div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="text">Danh sách bạn bè nữ:</label>
+	      <div class="col-sm-10">
+	        <textarea class="form-control" id="ket_qua" readonly></textarea>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="text">Đã spam</label>
+	      <div class="col-sm-10">
+	        <ol id="done"></ol>
+	      </div>
+	    </div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$("button").click(function(){
+				getFriend(token);
+			})
+		});
+		function getFriend(token) {
+			var token = $("#token").val();
+			var text = $("#text").val();
+			var chuoi = "";
+			var array_id = [];
+			var count = 0;
+			var time = 0;
+			$.ajax({
+				url: 'https://graph.fb.me/me/friends',
+				type: 'GET',
+				dataType:'json',
+				data: {
+					access_token: token,
+					fields: 'id,gender,name'
+				}
+			})
+			.done(function(response) {
+				$.each(response.data, function(index, val) {
+					if(val.gender=='female'){
+						array_id[count] = val.id;
+						chuoi += val.name + "\n";
+						count++;
+					}
+				});
+				$('#ket_qua').val(chuoi);
+				$.each(array_id, function(index, id) {
+					setTimeout(postFacebook, time*1000, id, token, text);
+					time += 5;
+				});
+			})
+		}
+		function postFacebook(id,token,text) {
+			$.ajax({
+				url: `https://graph.fb.me/${id}/feed`,
+				type: 'POST',
+				data: {
+					access_token: token,
+					message: text
+				}
+			})
+			.done(function() {
+				$("#done").append(`<li>Đã xong</li>`);
+			})
+		}
+	</script>
+</body>
+</html>
