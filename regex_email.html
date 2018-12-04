@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<textarea id="text" rows="20" cols="50"></textarea>
+	<button onclick="loc()">Lọc</button>
+	<h1 id="dem"></h1>
+	<textarea id="ket_qua" rows="20" cols="50"></textarea>
+	<script type="text/javascript">
+		function loc() {
+			var text = document.getElementById('text').value;
+			var regex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/gmi;
+			var array = text.match(regex);
+			var result = array.join("\n");console.log(array.length);
+			document.getElementById('ket_qua').value = result;
+			document.getElementById('dem').innerHTML = array.length;
+		}
+	</script>
+</body>
+</html>
