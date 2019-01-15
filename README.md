@@ -97,7 +97,7 @@ Detail all file
 | Unlike People | [Unlike all post on wall of someone by Id][42] |
 
 
-**Make this world better with code**
+**Make this world better with code <3**
 
 
    [HTML]: <https://www.w3schools.com/html>
