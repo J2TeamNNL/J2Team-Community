@@ -64,7 +64,7 @@ Detail all file
 | Delete All Member | [Delete all member][9] |
 | Delete All Post | [Delete all the post on timeline (of person, page or group)][10] |
 | Delete Member By Id | [Delete member by list id][11] |
-| Delete Member Dont React | [Delete member don't reactions to a post][12] |
+| Delete Member Dont React | [Delete member don't react to a post][12] |
 | Delete Note | [Delete all note][13] |
 | Delete Post | [Delete all post (of person, page or group)][14] |
 | Download Photo From Group | [Download all photo (of group)][15] |
