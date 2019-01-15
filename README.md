@@ -53,7 +53,7 @@ Detail all file
 
 | Feature | Detail |
 | ------ | ------ |
-| Add Friend By JS | [Click accept friend button][afbj] |
+| Add Friend By JS | [Click accept friend button][1] |
 | Add Friend By Id | [Send friend request with list ID][afbi] |
 | Add Friend Of Friend Of Id | [Send friend request with friend of list ID][afofoi] |
 | Auto Reactions Newfeed  | [Auto reactions anything new on the newfeed][arn] |
@@ -71,9 +71,45 @@ Detail all file
    [MySQL]: <https://www.w3schools.com/mysql>
    [Laravel]: <https://laravel.com/docs/>
 
-   [afbj]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/add_friend.js>
-   [afbi]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/add_friend_by_id.php>
-   [afofoi]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/add_friend_of_friend_of_id.php>
-   [arn]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/auto_reactions_newfeed.php>
-   [cp]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/change_all_privacy_to_myself.php>
-   [cpjs]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/change_privacy_movies.js>
+   [1]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/add_friend.js>
+   [2]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/add_friend_by_id.php>
+   [3]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/add_friend_of_friend_of_id.php>
+   [4]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/auto_reactions_newfeed.php>
+   [5]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/change_all_privacy_to_myself.php>
+   [6]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/change_privacy_movies.js>
+   [7]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/count_reaction_post.html>
+   [8]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/count_reaction_post.html>
+   [9]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/delete_all_member.php>
+   [10]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/delete_all_post_FB.php>
+   [11]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/delete_member_by_ID.php>
+   [12]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/delete_member_dont_react.php>
+   [13]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/delete_notes.php>
+   [14]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/delete_post.php>
+   [15]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/download_photo_from_group.php>
+   [16]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/download_photos_from_page_or_profile.php>
+   [17]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/filter_age.php>
+   [18]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/filter_age.php>
+   [19]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_ID_Facebook.js>
+   [20]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_id_and_username.php>
+   [21]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_id_dont_react.php>
+   [22]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_id_fb_by_link.php>
+   [23]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_id_follower.php>
+   [24]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_id_group_joined.php>
+   [25]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_id_member.php>
+   [26]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_id_post_from_url_FB.js>
+   [27]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_list_friend_by_gender.php>
+   [28]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_member_block.php>
+   [29]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_name_by_link_id.html>
+   [30]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/get_token.js>
+   [31]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/invite_all_friend_to_group.PHP>
+   [32]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/leave_all_group.php>
+   [33]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/load_comment.js>
+   [34]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/regex_email.html>
+   [35]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/regex_id_or_username_by_link_facebook>
+   [36]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/spam_female_wall.html>
+   [37]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/spam_reactions.php>
+   [38]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/tag_on_FB.php>
+   [39]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/tag_by_ID.js>
+   [40]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unfollow_friends.php>
+   [41]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unlike_all_page.php>
+   [42]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unlike_people.php>
