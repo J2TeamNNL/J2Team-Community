@@ -54,11 +54,47 @@ Detail all file
 | Feature | Detail |
 | ------ | ------ |
 | Add Friend By JS | [Click accept friend button][1] |
-| Add Friend By Id | [Send friend request with list ID][afbi] |
-| Add Friend Of Friend Of Id | [Send friend request with friend of list ID][afofoi] |
-| Auto Reactions Newfeed  | [Auto reactions anything new on the newfeed][arn] |
-| Change Privacy To Myself | [Change privacy of all post, photo or video (except profile picture, cover) to just you can see][cp] |
-| Change Privacy Movie or TV | [Change privacy movie or tv to public][cpjs] |
+| Add Friend By Id | [Send friend request with list ID][2] |
+| Add Friend Of Friend Of Id | [Send friend request with friend of list ID][3] |
+| Auto Reactions Newfeed  | [Auto reactions anything new on the newfeed][4] |
+| Change Privacy To Myself | [Change privacy of all post, photo or video (except profile picture, cover) to just you can see][5] |
+| Change Privacy Movie or TV | [Change privacy movie or tv to public][6] |
+| Count Reactions of Post | [Count reactions of post][7] |
+| Delete All Friend | [Delete all friend][8] |
+| Delete All Member | [Delete all member][9] |
+| Delete All Post | [Delete all the post on timeline (of person, page or group)][10] |
+| Delete Member By Id | [Delete member by list id][11] |
+| Delete Member Dont React | [Delete member don't reactions to a post][12] |
+| Delete Note | [Delete all note][13] |
+| Delete Post | [Delete all post (of person, page or group)][14] |
+| Download Photo From Group | [Download all photo (of group)][15] |
+| Download Photo From Page Or Profile | [Download all photo (of page or person)][16] |
+| Filer Age | [Filter age by list id][17] |
+| Filer Gender | [Filter gender by list id][18] |
+| Get Id Facebook | [Get ID (of person, page or group)][19] |
+| Get Id and Username | [Get ID and username by list ID (or username)][20] |
+| Get Id Dont React | [Get ID member dont reactions to a post][21] |
+| Get Id Fb By Link | [Get ID Facebook by link profile][22] |
+| Get Id Follower | [Get list id follower][23] |
+| Get Id Group Joined | [Get list id group joined][24] |
+| Get Id Member | [Get list id member group][25] |
+| Get Id Post From URL | [Get id post from url address][26] |
+| Get List Friend By Gender | [Get list id friend by gender][27] |
+| Get Member Block | [Get member block you][28] |
+| Get Name By Link | [Get name (of person, page or group) by link][29] |
+| Get Token | [Get token Page Manager of iOs (or HTC) - can't use anymore][30] |
+| Invite All Friend To Group | [Invite all friend to group][31] |
+| Leave All Group | [Leave all group][32] |
+| Load Comment | [Load all comment of post][33] |
+| Regex Email | [Get all email from comment][34] |
+| Regex Id Or Username By Link | [Regex Id or Username by link][35] |
+| Spam Female Wall | [Spam reactions wall of female (or male)][36] |
+| Spam Reactions | [Spam reactions someone][37] |
+| Tag On Facebook | [Tag on Facebook in comment][38] |
+| Tag By Id | [Tag someone in comment by Id][39] |
+| Unfollow Friend | [Unfollow all friend][40] |
+| Unlike All Page | [Unlike all page][41] |
+| Unlike People | [Unlike all post on wall of someone by Id][42] |
 
 
 **Make this world better with code**
