@@ -31,7 +31,7 @@
 
 # How to use
 
-With the HTML file, you can download and open it with any Browser right away. But with PHP file, you must watch this video to know [how to run PHP file](fb.com/709597696039020)
+With the HTML file, you can download and open it with any Browser right away. But with PHP file, you must watch this video to know [how to run PHP file](https://www.facebook.com/groups/j2team.community/permalink/709597696039020/)
 
 
 ### Feel free asking if there any bug or something you want me to do
