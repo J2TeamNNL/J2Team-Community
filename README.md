@@ -114,7 +114,7 @@ Detail all file
    [5]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/change_all_privacy_to_myself.php>
    [6]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/change_privacy_movies.js>
    [7]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/count_reaction_post.html>
-   [8]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/count_reaction_post.html>
+   [8]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/delete_all_friend.php>
    [9]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/delete_all_member.php>
    [10]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/delete_all_post_FB.php>
    [11]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/delete_member_by_ID.php>
