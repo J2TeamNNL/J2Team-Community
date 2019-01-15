@@ -73,7 +73,7 @@ Detail all file
 | Filer Gender | [Filter gender by list id][18] |
 | Get Id Facebook | [Get ID (of person, page or group)][19] |
 | Get Id and Username | [Get ID and username by list ID (or username)][20] |
-| Get Id Dont React | [Get ID member dont reactions to a post][21] |
+| Get Id Dont React | [Get ID member dont react to a post][21] |
 | Get Id Fb By Link | [Get ID Facebook by link profile][22] |
 | Get Id Follower | [Get list id follower][23] |
 | Get Id Group Joined | [Get list id group joined][24] |
