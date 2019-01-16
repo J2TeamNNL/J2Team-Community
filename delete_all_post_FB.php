@@ -24,13 +24,14 @@ if(isset($_POST['ok'])){
     $token      = $_POST['token'];
     $id_can_xoa = $_POST['id'];
     $option = $_POST['all'];
+    $limit = 500;
     if($option==0){
         $since = $_POST['since'];
         $until = $_POST['until'];
-        $link  = "https://graph.facebook.com/$id_can_xoa/feed?fields=id&limit=1000&access_token=$token&since=$since&until=$until";
+        $link  = "https://graph.facebook.com/$id_can_xoa/feed?fields=id&limit=$limit&access_token=$token&since=$since&until=$until";
     }
     else{
-       $link = "https://graph.facebook.com/$id_can_xoa/feed?fields=id&limit=1000&access_token=$token"; 
+       $link = "https://graph.facebook.com/$id_can_xoa/feed?fields=id&limit=$limit&access_token=$token"; 
     }
     while (true) {
        $curl    = curl_init();
