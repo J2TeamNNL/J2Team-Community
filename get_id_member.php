@@ -8,7 +8,7 @@ $token = "EAAA...";
 //id nhóm
 $id_nhom = "123";
 
-$url = "https://graph.facebook.com/$id_nhom/member?limit=5000&fields=id&access_token=$token";
+$url = "https://graph.facebook.com/$id_nhom/members?limit=5000&fields=id&access_token=$token";
 
 $array_id = array();
 
