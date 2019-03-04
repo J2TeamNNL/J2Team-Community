@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Count Reaction Post</title>
+</head>
+<body>
+<h3>Nhập token của bạn: <a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank"> Tìm kiếm trên nhóm J2Team Community</a></h3>
+<input type="text" id="token" placeholder="EAAA..." value=""><br>
+<h3>Nhập id người mà muốn lấy danh sách bạn bè: <a href="https://findmyfbid.com" target="_blank">Tìm trên findmyfbid.com</a></h3>
+<input type="number" id="id_person" placeholder="1000...." value=""><br>
+<br>
+<button>OK</button>
+<h1>Số lượng theo dõi của bạn bè</h1>
+<table>
+	<thead>
+		<th>
+			ID
+		</th>
+		<th>
+			Lượng người theo dõi
+		</th>
+	</thead>
+</table>
+
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>	
+<script>
+let token, id_person, array_id_friend = [], length_array, i, string_id='', link;
+var t = $('table').DataTable();
+$(document).ready(function(){
+    $("button").click(function(e){
+        e.stopPropagation();
+		token     = $("#token").val();
+		id_person = $("#id_person").val();
+		link = `https://graph.facebook.com/${id_person}/friends?limit=5000&fields=id&access_token=${token}`;
+		$.ajax({
+			url: link,
+			dataType: 'json'
+		})
+		.done(function(response) {
+			$.each(response.data, function(index,each){
+				array_id_friend.push(each.id);
+			});
+			length_array = array_id_friend.length;
+			for(i=1;i<=length_array;i++){
+				string_id += array_id_friend[i]+',';
+				if(i%20==0){
+					string_id = string_id.substring(0, string_id.length - 1);
+					getSubscriber(string_id);
+					string_id = '';
+				}
+			}
+			string_id = string_id.substring(0, string_id.length - 1);
+			getSubscriber(string_id);
+		});
+    });
+});
+function getSubscriber(string_id){
+	link = `https://graph.facebook.com/subscribers?ids=${string_id}&access_token=${token}&limit=0&summary=true`;
+	$.ajax({
+		url: link,
+		dataType: 'json'
+	})
+	.done(function(response) {
+		$.each(response, function(index,each){
+			t.row.add( [
+		        `<a href="https://fb.com/${index}" target="_blank">fb.com/${index}</a>`,
+		        each.summary.total_count
+		    ] ).draw( true );
+		})
+	});}
+</script>
+</body>
+</html>
