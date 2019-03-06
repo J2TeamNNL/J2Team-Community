@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Count Reaction Post</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<style type="text/css">
+		.hide{
+			display: none;
+		}
+	</style>
+</head>
+<body>
+
+<div class="container">
+  <h3>Nhập token của bạn: <a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy trong nhóm J2Team Community nhé</a></h3>
+	<input class="form-control" type="text" id="token" placeholder="EAAA..." value=""><br>
+	<h3>Nhập id bài đăng (để ý đoạn id= trên link địa chỉ hoặc đoạn mã số cuối cùng)</h3>
+	<input class="form-control" type="number" id="id_post" placeholder="1000...." value="">
+	<h3>Nhập số trúng thưởng (có thể để trống nếu muốn random từ 1-9999)</h3>
+	<input class="form-control" type="number" id="number_winner" placeholder="123" value="">
+	<h3>Nhập số người trúng (sẽ lấy đủ số người nếu gần trúng)</h3>
+	<input class="form-control" type="number" id="count_winner" placeholder="10" value="">
+	<h3>Bạn có muốn tag người đăng vào bình luận?</h3>
+	<select class="form-control" id="tagging">
+		<option value="1">Có</option>
+		<option value="0">Không</option>
+	</select>
+	<h3>Bạn có muốn lọc bình luận trùng?</h3>
+	<select class="form-control" id="duplicate">
+		<option value="1">Có</option>
+		<option value="0">Không</option>
+	</select>
+	<br>
+	<center>
+		<button class="btn btn-primary">OK</button>
+		<h3 id="load">Đợi 1 chút...</h3>
+		<a id="href_result" target="_blank"><h3>Ấn vào đây để xem bình luận (nếu chọn tag), có tổng: <span id="summary"></span> bình luận</h3></a>
+		<textarea id="text"></textarea>
+	</center>
+	<h1>Danh sách đã lọc</h1>
+	<table>
+		<thead>
+			<th>
+				Người bình luận
+			</th>
+			<th>
+				Comment
+			</th>
+		</thead>
+	</table>
+</div>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>	
+<script>
+Array.prototype.unique = function() {
+	return Array.from(new Set(this));
+}
+function getNumberFromString(string) {
+	return string.replace( /^\D+/g, '');
+}
+let token, id_post, number_winner, count_winner, tagging, duplicate, array_comment = [], object, count = 0, summary, left, name, id_person, data;
+var t = $('table').DataTable();
+$(document).ready(function(){
+	$("#text").css('display','none');
+	$("#load").css('display','none');
+	$("#href_result").css('display','none');
+    $("button").click(function(e){
+        e.stopPropagation();
+		$("#load").css('display','block');
+		$("#href_result").hide();
+		token         = $("#token").val();
+		id_post       = $("#id_post").val();
+		number_winner = $("#number_winner").val();
+		if(number_winner==''){
+			number_winner = Math.floor((Math.random() * 9999) + 1);
+		}
+		count_winner  = $("#count_winner").val();
+		tagging       = $("#tagging").val();
+		duplicate     = $("#duplicate").val();
+		getSummary();
+    });
+});
+function getSummary() {
+	link = `https://graph.facebook.com/${id_post}/?order=chronological&fields=comments&summary=true&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		summary = response.comments.count;
+		getComment();
+	})
+}
+function getObject(this_value) {
+	if(this_value!=undefined && this_value.from!=undefined){
+		message   = getNumberFromString(this_value.message);
+		if(message!=''){
+			name      = this_value.from.name;
+			id_person = this_value.from.id;
+			id_cmt = this_value.id;
+
+			object = {name: name, message: message, id_person: id_person, id_cmt: id_cmt};
+			// console.log(object);
+			array_comment.push(object);
+		}
+	}
+}
+function getComment(){
+	link = `https://graph.facebook.com/${id_post}/comments?limit=5000&order=chronological&fields=from,message&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		data = response.data;
+		$(data).each(function() {
+			var this_value = $(this)[0];
+			getObject(this_value);
+		});
+		left = summary - 5000;
+		if(left>0){
+			left = (left>5000) ? 5000 : left;
+			getReverseComment();
+		}
+		else{
+			getResult();
+		}
+	})
+}
+function getReverseComment(){
+	link = `https://graph.facebook.com/${id_post}/comments?limit=${left}&order=reverse_chronological&fields=from,message&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		data = response.data;
+		$(data).each(function() {
+			var this_value = $(this)[0];
+			getObject(this_value);
+		});
+		getResult();
+	})
+}
+function getUnique(arr, comp) {
+  const unique = arr
+       .map(e => e[comp])
+    .map((e, i, final) => final.indexOf(e) === i && i)
+    .filter(e => arr[e]).map(e => arr[e]);
+
+   return unique;
+}
+function getResult(){
+	if(duplicate=='1'){
+		array_comment = getUnique(array_comment,'id_person');
+	}
+	let array_winner = [];
+	for (var count_correct = 0; count_correct < count_winner; count_correct++) {
+		key = array_comment.reduce(function (r, a, i, aa) {
+	        return i && Math.abs(aa[r].message - number_winner) < Math.abs(a.message - number_winner) ? r : i;
+	    }, -1);
+		array_winner.push(array_comment[key]);
+	    array_comment.splice(key, 1);
+	}
+
+	var text = `Chúc mừng ${count_winner} bạn sau trong tổng số ${summary} bình luận:`;
+	$(array_winner).each(function(){
+		var this_person = $(this)[0];
+		message         = this_person.message;
+		name            = this_person.name;
+		id_person       = this_person.id_person;
+		id_cmt          = this_person.id_cmt;
+
+		text += `Bạn @[${id_person}:0] đã bình luận ${message}, đây là link bình luận fb.com/${id_cmt}\n`;
+		t.row.add( [
+	        `<a href="https://fb.com/${id_person}" target="_blank">${name}</a>`,
+	        `<a href="https://fb.com/${id_cmt}" target="_blank">${message}</a>`
+	    ] ).draw( true );
+	})
+	if(tagging=='1'){
+		link = `https://graph.facebook.com/${id_post}/comments`;
+		$.ajax({
+			url: link,
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				access_token: token,
+				message: text
+			},
+		})
+		.success(function(response) {
+			$("#href_result").attr( "href",`http://fb.com/${response.id}` );
+		});
+	}
+	$("#href_result").css('display','block');
+	$("#load").css('display','none');
+	$("#text").css('display','block');
+	$("#summary").html(summary);
+	$("#text").val(text);
+}
+</script>
+</body>
+</html>
