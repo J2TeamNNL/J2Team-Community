@@ -13,17 +13,17 @@
 
 <div class="container">
   <h3>Nhập token của bạn: <a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy trong nhóm J2Team Community nhé</a></h3>
-	<input class="form-control" type="text" id="token" placeholder="EAAA..." value=""><br>
+	<input class="form-control" type="text" id="token" placeholder="EAAA..." value="EAAAAUaZA8jlABAEIDZCHtNEGxjIy966jLk4xfQFXUH9Vu4Myaq04ZBqDGclj0dRsfaPcyqNymzqPu2H7tfTHRzAQFqgIKXJkbSXlZCM0FjodXuBEKTCQOuqc175IBU2S4kUBhzOFR17rqrNW2VQgb96qLKKZB9c7lm7l8dbTiGAZDZD" autocomplete="off"><br>
 	<h3>Nhập id bài đăng (để ý đoạn id= trên link địa chỉ hoặc đoạn mã số cuối cùng)</h3>
-	<input class="form-control" type="number" id="id_post" placeholder="1000...." value="">
+	<input class="form-control" type="number" id="id_post" placeholder="1000...." value="909130452752409">
 	<h3>Nhập số trúng thưởng (có thể để trống nếu muốn random từ 1-9999)</h3>
 	<input class="form-control" type="number" id="number_winner" placeholder="123" value="">
 	<h3>Nhập số người trúng (sẽ lấy đủ số người nếu gần trúng)</h3>
-	<input class="form-control" type="number" id="count_winner" placeholder="10" value="">
+	<input class="form-control" type="number" id="count_winner" placeholder="10" value="3">
 	<h3>Bạn có muốn tag người đăng vào bình luận?</h3>
 	<select class="form-control" id="tagging">
 		<option value="1">Có</option>
-		<option value="0">Không</option>
+		<option value="0" selected>Không</option>
 	</select>
 	<h3>Bạn có muốn lọc bình luận trùng?</h3>
 	<select class="form-control" id="duplicate">
@@ -34,8 +34,8 @@
 	<center>
 		<button class="btn btn-primary">OK</button>
 		<h3 id="load">Đợi 1 chút...</h3>
-		<a id="href_result" target="_blank"><h3>Ấn vào đây để xem bình luận (nếu chọn tag), có tổng: <span id="summary"></span> bình luận</h3></a>
-		<textarea id="text"></textarea>
+		<a id="href_result" target="_blank"><h3>Ấn vào đây để xem bình luận (nếu chọn tag), có tổng: <span id="summary"></span></h3></a>
+		<textarea class="form-control" id="text"></textarea>
 	</center>
 	<h1>Danh sách đã lọc</h1>
 	<table>
@@ -74,7 +74,7 @@ $(document).ready(function(){
 		id_post       = $("#id_post").val();
 		number_winner = $("#number_winner").val();
 		if(number_winner==''){
-			number_winner = Math.floor((Math.random() * 9999) + 1);
+			number_winner = Math.floor((Math.random() * 3000) + 1);
 		}
 		count_winner  = $("#count_winner").val();
 		tagging       = $("#tagging").val();
@@ -152,20 +152,33 @@ function getUnique(arr, comp) {
 
    return unique;
 }
+function findClosest (array,value) {
+	
+  // By default that will be a big number
+  var closestValue = Infinity;
+  // We will store the index of the element
+  var closestIndex = -1;
+  for (var i = 0; i < array.length; ++i) {
+    var diff = Math.abs(array[i].message - value);
+    if (diff < closestValue) {
+      closestValue = diff;
+      closestIndex = i;
+    }
+  }
+  return closestIndex;
+}
 function getResult(){
 	if(duplicate=='1'){
 		array_comment = getUnique(array_comment,'id_person');
 	}
 	let array_winner = [];
 	for (var count_correct = 0; count_correct < count_winner; count_correct++) {
-		key = array_comment.reduce(function (r, a, i, aa) {
-	        return i && Math.abs(aa[r].message - number_winner) < Math.abs(a.message - number_winner) ? r : i;
-	    }, -1);
-		array_winner.push(array_comment[key]);
+		key = findClosest(array_comment,number_winner);
+		array_winner.push(array_comment[key]);	
 	    array_comment.splice(key, 1);
 	}
 
-	var text = `Chúc mừng ${count_winner} bạn sau trong tổng số ${summary} bình luận:`;
+	var text = `Chúc mừng ${count_winner} bạn sau trong tổng số ${summary} bình luận, số trúng thưởng là ${number_winner}:\n`;
 	$(array_winner).each(function(){
 		var this_person = $(this)[0];
 		message         = this_person.message;
