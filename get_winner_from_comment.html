@@ -187,6 +187,9 @@ function getResult(){
 		id_cmt          = this_person.id_cmt;
 
 		text += `Bạn @[${id_person}:0] đã bình luận ${message}, đây là link bình luận fb.com/${id_cmt}\n`;
+		t
+	    .clear()
+	    .draw();
 		t.row.add( [
 	        `<a href="https://fb.com/${id_person}" target="_blank">${name}</a>`,
 	        `<a href="https://fb.com/${id_cmt}" target="_blank">${message}</a>`
