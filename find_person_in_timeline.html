@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Find Person In Timeline</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<style type="text/css">
+		.hide{
+			display: none;
+		}
+		img{
+			height: 200px;
+		}
+	</style>
+</head>
+<body>
+
+<div class="container">
+  <h3>Nhập Token của bạn: <a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy trong nhóm J2Team Community nhé</a></h3>
+	<input class="form-control" type="text" id="token" placeholder="EAAA..." value="" autocomplete="off"><br>
+	<h3>Nhập ID người dùng, nhóm hoặc trang (Person, Group or Page)</h3>
+	<input class="form-control" type="number" id="id_object" placeholder="1000...." value="">
+	<h3>Nhập tên người muốn tìm kiếm</h3>
+	<input class="form-control" type="text" id="name_find" placeholder="Nguyễn Nam Long" value="">
+	<h3>Tìm theo:</h3>
+	<div class="checkbox">
+	  <label><input type="checkbox" checked id='reactions'>Thích (like, love, haha, wow, sad, angry)</label>
+	</div>
+	<div class="checkbox">
+	  <label><input type="checkbox" checked id='comments'>Bình luận</label>
+	</div>
+	<div class="checkbox">
+	  <label><input type="checkbox" checked id='sharedposts'>Chia sẻ</label>
+	</div>
+	<h4>Nhập năm muốn tìm (để trống nếu muốn tìm trong tất cả thời gian - không tác dụng với nhóm)</h4>
+	<input type="number" id="year" min="2008" max="2100">
+	<br>
+	<h3>Tìm kiếm:</h3>
+	<select id='name_close' class="form-control">
+		<option value="1">
+			Chính xác theo tên
+		</option>
+		<option value="0">
+			Tên gần giống
+		</option>
+	</select>
+	
+	<br>
+	<br>
+	<center>
+		<button class="btn btn-primary">OK</button>
+		<h3 id="load">Đợi 1 chút...</h3>
+	</center>
+	<h1>Danh sách</h1>
+	<table>
+		<thead>
+			<th>
+				Người bình luận
+			</th>
+			<th>
+				Ảnh
+			</th>
+		</thead>
+	</table>
+</div>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>	
+<script>
+function checkName(name_person,id_person) {
+	if(name_close==0){
+		var array_name = convertName(name_person).split(" ");
+		var do_dai = array_name.length;
+		$(array_name).each(function(index, value){
+			if(value.includes(name_find)){
+				t.row.add( [
+			        `<a href="https://fb.com/${id}" target="_blank">${name}</a>`,
+			        `<a href="https://fb.com/${id}" target="_blank">
+			        <img src="https://graph.facebook.com/${id}/picture?type=large">
+			        </a>`
+			    ] ).draw( true );
+			}
+		})	
+	}
+	else{
+		if(name_person==name_find){
+			t.row.add( [
+		        `<a href="https://fb.com/${id}" target="_blank">${name}</a>`,
+		        `<a href="https://fb.com/${id}" target="_blank">
+		        <img src="https://graph.facebook.com/${id}/picture?type=large">
+		        </a>`
+		    ] ).draw( true );
+		}
+	}
+}
+function convertName(str) {
+    str = str.toLowerCase();
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+    str = str.replace(/đ/g, "d");
+    // Some system encode vietnamese combining accent as individual utf-8 characters
+    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền sắc hỏi ngã nặng 
+    str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
+    return str;
+}
+let token, id_object, name_find, year, fields, array = [], reactions = 0, comments = 0, sharedposts = 0, string_id, array_id = [], id_person, check, name_close;
+var t = $('table').DataTable({
+	"dom": 'ifrt',
+	"bAutoWidth": true
+});
+$(document).ready(function(){
+	$("#load").css('display','none');
+    $("button").click(function(e){
+    	t
+	    .clear()
+	    .draw();
+    	let dem = 0;
+        e.stopPropagation();
+		token      = $("#token").val();
+		id_object  = $("#id_object").val();
+		year       = $("#year").val();
+		name_close = $("#name_close").val();
+		name_find  = (name_close==0) ? convertName($("#name_find").val()) : $("#name_find").val();
+
+		if($('#reactions').is(":checked")){
+			reactions = 1;
+		}
+		else{
+			dem++;
+		}
+		if($('#comments').is(":checked")){
+			comments = 1;
+		}
+		else{
+			dem++;
+		}
+		if($('#sharedposts').is(":checked")){
+			sharedposts = 1;
+		}
+		else{
+			dem++;
+		}
+		if(dem==3){
+			alert('Bạn phải chọn 1 cái để kiểm tra');
+		}
+		else{
+			getPost();
+			$("#load").css('display','block');
+		}
+    });
+});
+function getPost(link = '') {
+	if(link==''){
+		if(year==''){
+			link = `https://graph.facebook.com/${id_object}/feed?fields=id&limit=50&access_token=${token}`;
+		}
+		else{
+			link = `https://graph.facebook.com/${id_object}/feed?fields=id&limit=50&since=${year}-01-01&until=${year}-12-31&access_token=${token}`;
+		}
+	}
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		$(response.data).each(function(){
+			array.push($(this)[0].id);
+		})
+		if(reactions==1){
+			getReacions();
+		}
+		if(comments==1){
+			getOthers('comments');
+		}
+		if(sharedposts==1){
+			getOthers('sharedposts');
+		}
+		array     = [];
+		if(typeof response.paging.next !== "undefined"){
+			link = response.paging.next;
+			getPost(link);
+		}
+	})
+}
+function getReacions() {
+	string_id = array.join();
+	link      = `https://graph.facebook.com/reactions?ids=${string_id}&fields=id,name&&access_token=${token}&limit=5000`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		$.each(response, function() {
+			$.each($(this)[0].data, function() {
+				id = $(this)[0].id;
+				if(array_id.indexOf(id)==-1){
+					array_id.push(id);
+					name  = $(this)[0].name;
+					check = checkName(name,id);
+				}
+			})
+		})
+	})
+}
+function getOthers(type) {
+	string_id = array.join();
+	link      = `https://graph.facebook.com/${type}?ids=${string_id}&fields=from&&access_token=${token}&limit=5000`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		$.each(response, function() {
+			$.each($(this)[0].data, function() {
+				id = $(this)[0].from.id;
+				if(array_id.indexOf(id)==-1){
+					array_id.push(id);
+					name  = $(this)[0].from.name;
+					check = checkName(name,id);
+				}
+			})
+		})
+	})
+}
+</script>
+</body>
+</html>
