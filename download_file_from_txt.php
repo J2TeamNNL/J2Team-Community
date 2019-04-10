@@ -9,7 +9,7 @@
 		<br>
 		Nhập số dòng muốn bỏ cách (có thể để trống) <input type="number" name="number_line">
 		<br>
-		Tên thư mục chứa (có thể để trống) <input type="text" name="folder">
+		Tên thư mục chứa (có thể để trống) <input type="text" name="folder" autocomplete="off">
 		<br>
 		<button name="button_submit">OK</button>
 	</form>
@@ -23,8 +23,8 @@
 			$data  = file_get_contents($file['tmp_name']);
 			$array = preg_split( '/\r\n|\r|\n/', $data );
 			$array = array_slice($array, $number_line);
-			
-			foreach ($array as $each) {
+
+			foreach ($array as $key => $each) {
 				$name_file = substr($each, strrpos($each, '/') + 1);
 				$fp    = fopen ($folder.$name_file , 'w+');
 	            $links = $each;
@@ -39,6 +39,8 @@
 	            curl_exec($curls);
 	            curl_close($curls);
 	            fclose($fp);
+	            $key++;
+	            echo "Đã tải $key ảnh<br>";
 			}
 		}
 	?>
