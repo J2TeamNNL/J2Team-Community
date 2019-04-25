@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Get Email Comment From Post</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+	<h1>Lọc Email từ bình luận</h1>
+  	<h3>Nhập token của bạn: <a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy trong nhóm J2Team Community nhé</a></h3>
+	<input class="form-control" type="text" id="token" placeholder="EAAA..." value="" autocomplete="off"><br>
+	<h3>Nhập id bài đăng (để ý đoạn id= trên link địa chỉ hoặc đoạn mã số cuối cùng)</h3>
+	<input type="number" id="id_post" class="form-control" value="">
+	<br>
+	<button>Lọc</button>
+	<h1>Danh sách đã lọc</h1>
+	<textarea class="form-control" id="result" rows="20"></textarea>
+</div>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+let token, id_post, result = "";
+$(document).ready(function(){
+	$("#result").css('display','none');
+    $("button").click(function(e){
+        e.stopPropagation();
+		token         = $("#token").val();
+		id_post       = $("#id_post").val();
+		getComment();
+    });
+});
+function getComment(){
+	link = `https://graph.facebook.com/${id_post}/comments?limit=5000&fields=message&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		data = response.data;
+		$(data).each(function() {
+			var this_value = $(this)[0];
+			result += this_value.message+" ";
+		});
+		var regex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/gmi;
+		var array = result.match(regex);
+		var result = array.join("\n");
+
+		$("#result").html(result);
+		$("#result").show();
+	})
+}
+</script>
+</body>
+</html>
