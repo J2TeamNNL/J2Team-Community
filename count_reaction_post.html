@@ -55,42 +55,44 @@ $(document).ready(function(){
         	index_post++;
         	id_object = `${id_object}_${id_post}`;
         	link = `https://graph.facebook.com/${id_object}/sharedposts?limit=1000&fields=from.id&access_token=${token}`;
-        	array_share[id_post] = [];
-        	array_like[id_post] = 0;
-        	array_comment[id_post] = 0;
-        	activeAjaxConnections[id_post] = 3;
-        	array_index[id_post] = index_post;
-        	getShare(link,id_post);
-        	getLike(id_post);
+			array_share[id_object]           = [];
+			activeAjaxConnections[id_object] = 3;
+        	getShare(link,id_object);
+			array_comment[id_object]         = 0;
         	getComment(id_object);
+
+			array_index[id_object] = index_post;
+
+			array_like[id_object] = 0;
+        	getLike(id_post,id_object);
        });
     });
 });
-function getShare(link,id_post){
+function getShare(link,id_object){
 	$.ajax({
 		url: link,
 		dataType: 'json',
 	})
 	.success(function(response) {
 		$.each(response.data, function(index,each){
-			array_share[id_post].push(each.from.id);
+			array_share[id_object].push(each.from.id);
 		});
 		if(response.paging){
 			if(response.paging.next){
 				link = response.paging.next;
-				getShare(link,id_post);
+				getShare(link,id_object);
 			}
 			else{
-				activeAjaxConnections[id_post]--;
-				if(activeAjaxConnections[id_post]==0){
-					getResult(id_post);
+				activeAjaxConnections[id_object]--;
+				if(activeAjaxConnections[id_object]==0){
+					getResult(id_object);
 				}
 			}
 		}
 		else{
-			activeAjaxConnections[id_post]--;
-			if(activeAjaxConnections[id_post]==0){
-				getResult(id_post);
+			activeAjaxConnections[id_object]--;
+			if(activeAjaxConnections[id_object]==0){
+				getResult(id_object);
 			}
 		}
 	})
@@ -99,7 +101,7 @@ function getShare(link,id_post){
 		// alert("Bạn đã nhập 1 cái gì đó sai sai");
 	});
 }
-function getLike(id_post){
+function getLike(id_post,id_object){
 	link = `https://graph.facebook.com/${id_post}/reactions?limit=0&fields=id&summary=true&access_token=${token}`;
 	$.ajax({
 		url: link,
@@ -107,42 +109,42 @@ function getLike(id_post){
 	})
 	.success(function(response) {
 		if(response.summary){
-			array_like[id_post] = response.summary.total_count;
+			array_like[id_object] = response.summary.total_count;
 		}
-		activeAjaxConnections[id_post]--;
-		if(activeAjaxConnections[id_post]==0){
-			getResult(id_post);
+		activeAjaxConnections[id_object]--;
+		if(activeAjaxConnections[id_object]==0){
+			getResult(id_object);
 		}
 	})
 	.fail(function() {
-		getLike(id_post);
+		getLike(id_post,id_object);
 		// alert("Bạn đã nhập 1 cái gì đó sai sai");
 	});
 }
-function getComment(id_post){
-	link = `https://graph.facebook.com/${id_post}?fields=comments&summary=true&access_token=${token}`;
+function getComment(id_object){
+	link = `https://graph.facebook.com/${id_object}?fields=comments&summary=true&access_token=${token}`;
 	$.ajax({
 		url: link,
 		dataType: 'json',
 	})
 	.success(function(response) {
 		if(response.comments){
-			array_comment[id_post] = response.comments.count;
+			array_comment[id_object] = response.comments.count;
 		}
-		activeAjaxConnections[id_post]--;
-		if(activeAjaxConnections[id_post]==0){
-			getResult(id_post);
+		activeAjaxConnections[id_object]--;
+		if(activeAjaxConnections[id_object]==0){
+			getResult(id_object);
 		}
 	})
 }
-function getResult(id_post){
-	array_unique = array_share[id_post].unique();
-	index = array_index[id_post];
+function getResult(id_object){
+	array_unique = array_share[id_object].unique();
+	index = array_index[id_object];
 	t.row.add( [
         index,
-        `<a href="https://fb.com/${id_post}" target="_blank">fb.com/${id_post}</a>`,
-        array_like[id_post],
-        array_comment[id_post],
+        `<a href="https://fb.com/${id_object}" target="_blank">fb.com/${id_object}</a>`,
+        array_like[id_object],
+        array_comment[id_object],
         array_unique.length
     ] ).draw( true );
 }
