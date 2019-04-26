@@ -53,7 +53,7 @@ $(document).ready(function(){
 		array_id  = $("textarea").val().split("\n");
         $.each(array_id, function(index,id_post){
         	index_post++;
-        	id_post = `${id_object}_${id_post}`;
+        	//id_post = `${id_object}_${id_post}`;
         	link = `https://graph.facebook.com/${id_post}/sharedposts?limit=1000&fields=from.id&access_token=${token}`;
         	array_share[id_post] = [];
         	array_like[id_post] = 0;
