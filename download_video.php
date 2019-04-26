@@ -19,7 +19,7 @@ if(isset($_POST['ok'])){
     ini_set('max_execution_time', 0);
     $token = $_POST['token'];
     $id    = $_POST['id'];
-    $link  = "https://graph.facebook.com/$id/videos?fields=source&limit=200&access_token=$token"; 
+    $link  = "https://graph.facebook.com/$id/videos?fields=source&limit=100&access_token=$token"; 
     while (true) {
        $curl    = curl_init();
         curl_setopt_array($curl, array(
