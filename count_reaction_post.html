@@ -53,8 +53,8 @@ $(document).ready(function(){
 		array_id  = $("textarea").val().split("\n");
         $.each(array_id, function(index,id_post){
         	index_post++;
-        	//id_post = `${id_object}_${id_post}`;
-        	link = `https://graph.facebook.com/${id_post}/sharedposts?limit=1000&fields=from.id&access_token=${token}`;
+        	id_object = `${id_object}_${id_post}`;
+        	link = `https://graph.facebook.com/${id_object}/sharedposts?limit=1000&fields=from.id&access_token=${token}`;
         	array_share[id_post] = [];
         	array_like[id_post] = 0;
         	array_comment[id_post] = 0;
@@ -62,7 +62,7 @@ $(document).ready(function(){
         	array_index[id_post] = index_post;
         	getShare(link,id_post);
         	getLike(id_post);
-        	getComment(id_post);
+        	getComment(id_object);
        });
     });
 });
