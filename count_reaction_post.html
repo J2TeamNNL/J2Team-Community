@@ -100,7 +100,7 @@ function getShare(link,id_post){
 	});
 }
 function getLike(id_post){
-	link = `https://graph.facebook.com/${id_post}/reactions?limit=1&fields=id&summary=true&access_token=${token}`;
+	link = `https://graph.facebook.com/${id_post}/reactions?limit=0&fields=id&summary=true&access_token=${token}`;
 	$.ajax({
 		url: link,
 		dataType: 'json',
