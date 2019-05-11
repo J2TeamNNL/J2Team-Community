@@ -28,10 +28,10 @@ if(isset($_POST['ok'])){
     if($option==0){
         $since = $_POST['since'];
         $until = $_POST['until'];
-        $link  = "https://graph.facebook.com/$id_can_xoa/posts?fields=id,type&limit=500&access_token=$token&since=$since&until=$until";
+        $link  = "https://graph.facebook.com/$id_can_xoa/posts?fields=id,type&limit=100&access_token=$token&since=$since&until=$until";
     }
     else{
-       $link = "https://graph.facebook.com/$id_can_xoa/posts?fields=id,type&limit=500&access_token=$token"; 
+       $link = "https://graph.facebook.com/$id_can_xoa/posts?fields=id,type&limit=100&access_token=$token"; 
     }
     while (true) {
        $curl    = curl_init();
