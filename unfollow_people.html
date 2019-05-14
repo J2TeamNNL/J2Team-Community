@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Delete Comment</title>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+</head>
+<body align='center'>
+<h3>Nhập token của bạn: 
+	<a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy token trong nhóm J2Team Community</a>
+</h3>
+<input type="text" id="token" placeholder="EAAA..." value=""><br>
+<button>OK</button>
+<h1>Danh sách đã huỷ theo dõi</h1>
+<table>
+	<thead>
+		<th>
+			Tên
+		</th>
+		<th>
+			Ảnh Đại Diện
+		</th>
+	</thead>
+</table>
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>	
+<script>
+let token;
+var t = $('table').DataTable();
+$(document).ready(function(){
+    $("button").click(function(e){
+        e.stopPropagation();
+		token   = $("#token").val();
+		getSubcribers();
+    });
+});
+function getSubcribers(){
+	link = `https://graph.facebook.com/graphql?q=viewer(){actor{subscriptions{nodes{name,id}}}}&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		$(response.viewer.actor.subscriptions.nodes).each(function(){
+			unfollow(this.id,this.name);
+		})
+	})
+}
+function unfollow(id,name){
+	link = `https://graph.facebook.com/${id}/subscribers?method=delete&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function() {
+		t.row.add( [
+	        `<a href="https://fb.com/${id}" target="_blank">${name}</a>`,
+	        `<img src='https://graph.facebook.com/${id}/picture'>`
+	    ] ).draw( true );
+	})
+}
+</script>
+</body>
+</html>
