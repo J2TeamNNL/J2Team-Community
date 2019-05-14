@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Delete Comment</title>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+</head>
+<body>
+<h3>Nhập token của bạn: 
+	<a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy token trong nhóm J2Team Community</a>
+</h3>
+<input type="text" id="token" placeholder="EAAA..." value=""><br>
+<h3>Nhập id bài đăng</h3>
+<input type="number" id="id_post" value="">
+<br>
+<h3>Nhập id bài đăng</h3>
+<input type="number" id="id_post" value="">
+<br>
+<button>OK</button>
+<h1>Danh sách đã xoá</h1>
+<ol id="result">
+</ol>
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+let token, id_post, patt;
+$(document).ready(function(){
+    $("button").click(function(e){
+        e.stopPropagation();
+		token   = $("#token").val();
+		id_post = $("#id_post").val();
+		patt = /\*/;
+		getComment(id_post);
+    });
+});
+function getComment(id_post){
+	link = `https://graph.facebook.com/${id_post}/comments?fields=message&limit=5000&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		$(response.data).each(function(){
+			if(patt.test(this.message)){
+				deleteComment(this.id);
+			}
+		})
+	})
+}
+function deleteComment(id_comment){
+	link = `https://graph.facebook.com/${id_comment}?method=delete&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function() {
+		$("#result").append(`<li>Đã xoá ${id_comment}</li>`);
+	})
+}
+</script>
+</body>
+</html>
