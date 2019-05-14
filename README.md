@@ -93,8 +93,9 @@ Detail all file
 | Tag On Facebook | [Tag on Facebook in comment][38] |
 | Tag By Id | [Tag someone in comment by Id][39] |
 | Unfollow Friend | [Unfollow all friend][40] |
-| Unlike All Page | [Unlike all page][41] |
-| Unlike People | [Unlike all post on wall of someone by Id][42] |
+| Unfollow People | [Unfollow all strangers][41] |
+| Unlike All Page | [Unlike all page][42] |
+| Unlike People | [Unlike all post on wall of someone by Id][43] |
 
 
 **Make this world better with code ♥**
@@ -143,9 +144,10 @@ Detail all file
    [34]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/regex_email.html>
    [35]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/regex_id_or_username_by_link_facebook>
    [36]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/spam_female_wall.html>
-   [37]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/spam_reactions.php>
+   [37]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/spam_reactions.html>
    [38]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/tag_on_FB.php>
    [39]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/tag_by_ID.js>
    [40]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unfollow_friends.php>
-   [41]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unlike_all_page.php>
-   [42]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unlike_people.php>
+   [41]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unfollow_people.html>
+   [42]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unlike_all_page.php>
+   [43]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unlike_people.php>
