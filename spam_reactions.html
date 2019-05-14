@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Delete Comment</title>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="box" align="center">
+	<div class="col-md-8">
+	<h3>Nhập token của bạn: 
+		<a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy token trong nhóm J2Team Community</a>
+	</h3>
+	<input type="text" class="form-control" id="token" placeholder="EAAA..." value=""><br>
+	<h3>Nhập id nạn nhân</h3>
+	<input type="number" class="form-control" id="id_person" value="">
+	<br>
+	<h3>Chọn kiểu tương tác</h3>
+	<select id="reactions" class="form-control">
+		<option value="random">Ngẫu nhiên</option>
+		<option>HAHA</option>
+		<option>LOVE</option>
+		<option>LIKE</option>
+		<option>ANGRY</option>
+		<option>WOW</option>
+		<option>SAD</option>
+	</select>
+	<br>
+	<button class="btn btn-primary">OK</button>
+	<h1 id="fail">Đã spam</h1>
+	<ol id="result">
+	</ol>
+	</div>
+</div>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+let token, id_person, link, reactions, patt;
+var array_reactions = ['WOW','SAD','LIKE','LOVE','HAHA','ANGRY'];
+$(document).ready(function(){
+    $("button").click(function(e){
+        e.stopPropagation();
+		token     = $("#token").val();
+		id_person = $("#id_person").val();
+		reactions = $("#reactions").val();
+		link = `https://graph.facebook.com/${id_person}/feed?limit=5&fields=id&access_token=${token}`;
+		getPost(link);
+    });
+});
+function getPost(link){
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		num = 0;
+		$(response.data).each(function(){
+			num++;
+			time = Math.random()*3000;
+			id_post = this.id;
+			setTimeout(function(){
+	            if(reactions=='random'){
+					reactions = array_reactions[Math.floor(Math.random()*array_reactions.length)];
+				}
+				link = `https://graph.facebook.com/${id_post}/reactions?type=${reactions}&method=post&access_token=${token}`;
+				$.ajax({
+					url: link,
+					dataType: 'json',
+				})
+				.success(function() {
+					$("#result").append(`<li>Đã thả ${reactions} bài <a href='https://facebook.com/${id_post}' target='_blank'>${id_post}</a></li>`);
+				})
+				.error(function() {
+					$("#fail").html(`Đã bị chặn bão`);
+				});
+	        },
+	        time * num);
+		})
+	})
+}
+</script>
+</body>
+</html>
