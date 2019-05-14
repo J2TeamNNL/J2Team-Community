@@ -53,26 +53,29 @@ function getPost(link){
 		$(response.data).each(function(){
 			num++;
 			time = Math.random()*3000;
-			id_post = this.id;
+			var id_post = this.id;
 			setTimeout(function(){
-	            if(reactions=='random'){
-					reactions = array_reactions[Math.floor(Math.random()*array_reactions.length)];
-				}
-				link = `https://graph.facebook.com/${id_post}/reactions?type=${reactions}&method=post&access_token=${token}`;
-				$.ajax({
-					url: link,
-					dataType: 'json',
-				})
-				.success(function() {
-					$("#result").append(`<li>Đã thả ${reactions} bài <a href='https://facebook.com/${id_post}' target='_blank'>${id_post}</a></li>`);
-				})
-				.error(function() {
-					$("#fail").html(`Đã bị chặn bão`);
-				});
+	            spam(id_post);
 	        },
 	        time * num);
 		})
 	})
+}
+function spam(id_post) {
+	if(reactions=='random'){
+		reactions = array_reactions[Math.floor(Math.random()*array_reactions.length)];
+	}
+	link = `https://graph.facebook.com/${id_post}/reactions?type=${reactions}&method=post&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function() {
+		$("#result").append(`<li>Đã thả ${reactions} bài <a href='https://facebook.com/${id_post}' target='_blank'>${id_post}</a></li>`);
+	})
+	.error(function() {
+		$("#fail").html(`Đã bị chặn bão`);
+	});
 }
 </script>
 </body>
