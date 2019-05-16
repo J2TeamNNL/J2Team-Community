@@ -21,7 +21,7 @@
 <?php
 if(isset($_POST['ok'])){
     ini_set('max_execution_time', 0);
-    $token      = $_POST['token'];
+    $token  = $_POST['token'];
     $option = $_POST['all'];
     if($option==0){
         $since = $_POST['since'];
