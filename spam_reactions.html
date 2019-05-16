@@ -40,7 +40,7 @@ $(document).ready(function(){
 		token     = $("#token").val();
 		id_person = $("#id_person").val();
 		reactions = $("#reactions").val();
-		link = `https://graph.facebook.com/${id_person}/feed?limit=5&fields=id&access_token=${token}`;
+		link = `https://graph.facebook.com/${id_person}/feed?limit=50&fields=id&access_token=${token}`;
 		getPost(link);
     });
 });
