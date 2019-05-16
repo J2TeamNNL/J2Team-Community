@@ -61,7 +61,7 @@ $(document).ready(function(){
         	index_post++;
         	id_object_new = `${id_object}_${id_post}`;
 
-        	link = `https://graph.facebook.com/${id_post}/sharedposts?limit=1000&fields=from.id&access_token=${token_person}`;
+        	link = `https://graph.facebook.com/${id_object_new}/sharedposts?limit=1000&fields=from.id&access_token=${token_person}`;
 			array_share[id_object_new]           = [];
 			activeAjaxConnections[id_object_new] = 2;
         	getShare(link,id_object_new);
