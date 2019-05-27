@@ -61,6 +61,7 @@ Detail all file
 | Change Privacy To Myself | [Change privacy of all post, photo or video (except profile picture, cover) to just you can see][5] |
 | Change Privacy Movie or TV | [Change privacy movie or tv to public][6] |
 | Count Reactions of Post | [Count reactions of post][7] |
+| Delete Comment | [Delete comment with Regex][45] |
 | Delete All Friend | [Delete all friend][8] |
 | Delete All Member | [Delete all member][9] |
 | Delete All Post | [Delete all the post on timeline (of person, page or group)][10] |
@@ -155,3 +156,4 @@ Detail all file
    [42]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unlike_all_page.php>
    [43]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unlike_people.php>
    [44]: <https://j2teamnnl.github.io/J2Team-Community/get_email_comment_from_post.html>
+   [45]: <https://j2teamnnl.github.io/J2Team-Community/delete_comment.html>
