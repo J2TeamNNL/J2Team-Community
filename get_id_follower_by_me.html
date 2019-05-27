@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Delete Comment</title>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+</head>
+<body align='center'>
+<h3>Nhập token của bạn: 
+	<a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy token trong nhóm J2Team Community</a>
+</h3>
+<input type="text" id="token" placeholder="EAAA..." value="" class="form-control"><br>
+<button>OK</button>
+<h1>Danh sách đã theo dõi</h1>
+<textarea id="result" class="form-control" rows="20"></textarea>
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+$(document).ready(function(){
+    $("button").click(function(e){
+        e.stopPropagation();
+		token   = $("#token").val();
+		getSubcribers();
+    });
+});
+function getSubcribers(){
+	link = `https://graph.facebook.com/graphql?q=viewer(){actor{subscriptions{nodes{name,id}}}}&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		$('#result').val('');
+		var string = '';
+		$(response.viewer.actor.subscriptions.nodes).each(function(){
+			string += `${this.id}\n`;
+		})
+		$('#result').val(string);
+	})
+}
+</script>
+</body>
+</html>
