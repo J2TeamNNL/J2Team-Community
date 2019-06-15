@@ -3,6 +3,7 @@
 <head>
 	<title>Count Reaction Post</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<meta charset="utf-8">
 	<style type="text/css">
 		.hide{
 			display: none;
@@ -16,10 +17,13 @@
 	<input class="form-control" type="text" id="token" placeholder="EAAA..." value="" autocomplete="off"><br>
 	<h3>Nhập id bài đăng (để ý đoạn id= trên link địa chỉ hoặc đoạn mã số cuối cùng)</h3>
 	<input class="form-control" type="number" id="id_post" placeholder="1000...." value="">
-	<h3>Nhập số trúng thưởng (có thể để trống nếu muốn random từ 1-9999)</h3>
-	<input class="form-control" type="number" id="number_winner" placeholder="123" value="">
+	<h3>Chọn kiểu trúng thưởng</h3>
+	<select class="form-control" id="type_win">
+		<option value="1">Bình luận ngẫu nhiên</option>
+		<option value="0">Bình luận số random (ngẫu nhiên số từ 1-9999)</option>
+	</select>
 	<h3>Nhập số người trúng (sẽ lấy đủ số người nếu gần trúng)</h3>
-	<input class="form-control" type="number" id="count_winner" placeholder="10" value="">
+	<input class="form-control" type="number" id="count_winner" placeholder="123" value="">
 	<h3>Bạn có muốn tag người đăng vào bình luận?</h3>
 	<select class="form-control" id="tagging">
 		<option value="1">Có</option>
@@ -35,7 +39,7 @@
 		<button class="btn btn-primary">OK</button>
 		<h3 id="load">Đợi 1 chút...</h3>
 		<a id="href_result" target="_blank"><h3>Ấn vào đây để xem bình luận (nếu chọn tag), có tổng: <span id="summary"></span></h3></a>
-		<textarea class="form-control" id="text"></textarea>
+		<textarea class="form-control" id="text" row='20'></textarea>
 	</center>
 	<h1>Danh sách đã lọc</h1>
 	<table>
@@ -57,10 +61,7 @@
 Array.prototype.unique = function() {
 	return Array.from(new Set(this));
 }
-function getNumberFromString(string) {
-	return string.replace( /^\D+/g, '');
-}
-let token, id_post, number_winner, count_winner, tagging, duplicate, array_comment = [], object, count = 0, summary, left, name, id_person, data;
+let token, id_post, number_winner, count_winner, tagging, duplicate, array_comment = [], object, count = 0, summary, left, name, id_person, data, type_win;
 var t = $('table').DataTable();
 $(document).ready(function(){
 	$("#text").css('display','none');
@@ -72,9 +73,9 @@ $(document).ready(function(){
 		$("#href_result").hide();
 		token         = $("#token").val();
 		id_post       = $("#id_post").val();
-		number_winner = $("#number_winner").val();
-		if(number_winner==''){
-			number_winner = Math.floor((Math.random() * 3000) + 1);
+		type_win       = $("#type_win").val();
+		if(type_win==0){
+			number_winner = Math.floor((Math.random() * 9999) + 1);
 		}
 		count_winner  = $("#count_winner").val();
 		tagging       = $("#tagging").val();
@@ -92,20 +93,6 @@ function getSummary() {
 		summary = response.comments.count;
 		getComment();
 	})
-}
-function getObject(this_value) {
-	if(this_value!=undefined && this_value.from!=undefined){
-		message   = getNumberFromString(this_value.message);
-		if(message!=''){
-			name      = this_value.from.name;
-			id_person = this_value.from.id;
-			id_cmt = this_value.id;
-
-			object = {name: name, message: message, id_person: id_person, id_cmt: id_cmt};
-			// console.log(object);
-			array_comment.push(object);
-		}
-	}
 }
 function getComment(){
 	link = `https://graph.facebook.com/${id_post}/comments?limit=5000&order=chronological&fields=from,message&access_token=${token}`;
@@ -128,6 +115,24 @@ function getComment(){
 			getResult();
 		}
 	})
+}
+function getObject(this_value) {
+	if(this_value!=undefined && this_value.from!=undefined){
+		message = this_value.message;
+		if(type_win==0 && getNumberFromString(message)==''){
+			return false;
+		}
+		name      = this_value.from.name;
+		id_person = this_value.from.id;
+		id_cmt = this_value.id;
+
+		object = {name: name, message: message, id_person: id_person, id_cmt: id_cmt};
+		console.log(object);
+		array_comment.push(object);
+	}
+}
+function getNumberFromString(string) {
+	return string.replace( /^\D+/g, '');
 }
 function getReverseComment(){
 	link = `https://graph.facebook.com/${id_post}/comments?limit=${left}&order=reverse_chronological&fields=from,message&access_token=${token}`;
@@ -152,33 +157,28 @@ function getUnique(arr, comp) {
 
    return unique;
 }
-function findClosest (array,value) {
-	
-  // By default that will be a big number
-  var closestValue = Infinity;
-  // We will store the index of the element
-  var closestIndex = -1;
-  for (var i = 0; i < array.length; ++i) {
-    var diff = Math.abs(array[i].message - value);
-    if (diff < closestValue) {
-      closestValue = diff;
-      closestIndex = i;
-    }
-  }
-  return closestIndex;
-}
 function getResult(){
 	if(duplicate=='1'){
 		array_comment = getUnique(array_comment,'id_person');
 	}
 	let array_winner = [];
 	for (var count_correct = 0; count_correct < count_winner; count_correct++) {
-		key = findClosest(array_comment,number_winner);
+		if(type_win==0){
+			key = findClosest(array_comment,number_winner);
+		}
+		else{
+			key = Math.floor(Math.random() * array_comment.length);
+		}
 		array_winner.push(array_comment[key]);	
 	    array_comment.splice(key, 1);
 	}
-
-	var text = `Chúc mừng ${count_winner} bạn sau trong tổng số ${summary} bình luận, số trúng thưởng là ${number_winner}:\n`;
+	var text = `Chúc mừng ${count_winner} bạn sau trong tổng số ${summary} bình luận:\n`;
+	if(type_win==0){
+		text += `, số trúng thưởng là ${number_winner}`;
+	}
+	t
+	.clear()
+	.draw();
 	$(array_winner).each(function(){
 		var this_person = $(this)[0];
 		message         = this_person.message;
@@ -186,10 +186,8 @@ function getResult(){
 		id_person       = this_person.id_person;
 		id_cmt          = this_person.id_cmt;
 
-		text += `Bạn @[${id_person}:0] đã bình luận ${message}, đây là link bình luận fb.com/${id_cmt}\n`;
-		t
-	    .clear()
-	    .draw();
+		text += `\nBạn @[${id_person}:0] đã bình luận "${message}", đây là link bình luận fb.com/${id_cmt}`;
+		
 		t.row.add( [
 	        `<a href="https://fb.com/${id_person}" target="_blank">${name}</a>`,
 	        `<a href="https://fb.com/${id_cmt}" target="_blank">${message}</a>`
@@ -215,6 +213,20 @@ function getResult(){
 	$("#text").css('display','block');
 	$("#summary").html(summary);
 	$("#text").val(text);
+}
+function findClosest (array,value) {
+  // By default that will be a big number
+  var closestValue = Infinity;
+  // We will store the index of the element
+  var closestIndex = -1;
+  for (var i = 0; i < array.length; ++i) {
+  		var diff = Math.abs(array[i].message - value);
+  		if (diff < closestValue) {
+	  		closestValue = diff;
+	  		closestIndex = i;
+  		}
+  	}
+	return closestIndex;
 }
 </script>
 </body>
