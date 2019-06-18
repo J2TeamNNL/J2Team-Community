@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Lọc ảnh
+	</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		.each_div{
+			width:27%;
+            height: 600px;
+            float: left;
+            border: 1px solid;
+			text-align:center; 
+            padding:10px;
+		}
+		.div_title{
+			width:100%;
+			height: 5%;
+		}
+		.div_img{
+			width:100%;
+			height: 95%;
+		}
+		img { 
+            width: 100%; 
+            height: 100%;
+            object-fit: contain; 
+        }
+
+		.toggle-2 {
+		  display: none;
+		}
+
+		.label-2 {
+		  display: inline-block;
+		  background: #2c3e50;
+		  width: 4em;
+		  height: 2em;
+		  border-radius: 1em;
+		  position: relative;
+		  cursor: pointer;
+		  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgYmFzZVByb2ZpbGU9InRpbnkiIGhlaWdodD0iMTAwJSIgaWQ9IkxheWVyXzEiIHZlcnNpb249IjEuMiIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMTAwJSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgZmlsbD0iI2ZmZiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PHBhdGggZD0iTTE2Ljk3Miw2LjI1MWMtMC45NjctMC41MzgtMi4xODUtMC4xODgtMi43MiwwLjc3N2wtMy43MTMsNi42ODJsLTIuMTI1LTIuMTI1Yy0wLjc4MS0wLjc4MS0yLjA0Ny0wLjc4MS0yLjgyOCwwICBjLTAuNzgxLDAuNzgxLTAuNzgxLDIuMDQ3LDAsMi44MjhsNCw0QzkuOTY0LDE4Ljc5MiwxMC40NzQsMTksMTEsMTljMC4wOTIsMCwwLjE4NS0wLjAwNiwwLjI3Ny0wLjAyICBjMC42MjEtMC4wODcsMS4xNjYtMC40NiwxLjQ3MS0xLjAwOWw1LTlDMTguMjg1LDguMDA1LDE3LjkzNyw2Ljc4OCwxNi45NzIsNi4yNTF6Ii8+PC9zdmc+) #2c3e50 no-repeat;
+		}
+
+		.switch-2 {
+		  position: absolute;
+		  width: 1.8em;
+		  height: 1.8em;
+		  margin-top: 0.1em;
+		  margin-lefT: 0.1em;
+		  border-radius: 2em;
+		  background: #c0392b;
+		  box-shadow: 5px 0px 28px -9px rgba(0, 0, 0, 0.75);
+		  transition: -webkit-transform .2s ease-in;
+		  transition: transform .2s ease-in;
+		  transition: transform .2s ease-in, -webkit-transform .2s ease-in;
+		}
+
+		.toggle-2:checked ~ .label-2 .switch-2 {
+		  background: #2ecc71;
+		  box-shadow: -5px 0px 28px -9px rgba(0, 0, 0, 0.75);
+		  -webkit-transform: translatex(2em);
+		          transform: translatex(2em);
+		  transition: -webkit-transform .2s ease-in;
+		  transition: transform .2s ease-in;
+		  transition: transform .2s ease-in, -webkit-transform .2s ease-in;
+		}
+	</style>
+</head>
+<body>
+
+	Thư mục chứa: <input type="text" id="input_path" value="Instagram" />
+	Chọn thư mục ảnh: <input type="file" id="fileinput" webkitdirectory directory multiple/>
+	
+	<div id="result">
+		
+	</div>
+	<div style="position: fixed; width: 225px; bottom: 150px; right: 0px;">
+		<label>
+			<input type="radio" name="option" value="delete_unselect_till_last_select" checked>
+			Xoá ảnh không chọn đến ảnh cuối cùng đã chọn
+		</label>
+		<br>
+		<label>
+			<input type="radio" name="option" value="delete_unselect">
+			Xoá ảnh không chọn
+		</label>
+		<br>
+		<label>
+			<input type="radio" name="option" value="delete_select">
+			Xoá ảnh đã chọn
+		</label>
+		<br>
+		<button id="button_delete">
+			Xoá
+		</button>
+		<br>
+		Thư mục lưu: <input type="text" id="folder_save" value="Save">
+		<br>
+		<button id="button_save">
+			Lưu ảnh đã chọn
+		</button>
+	</div>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="notify.js"></script>
+<script type="text/javascript" src="jquery.elevatezoom.js"></script>
+<script type="text/javascript">
+var dem_xu_ly, folder_save, path_folder;
+function readMultipleFiles(evt) {
+	$("#result").html('');
+	var path_folder = $("#input_path").val();
+	var files = evt.target.files; 
+	if (files) {
+		var number = 0;
+	    for (var i=0, f; f=files[i]; i++) {
+	        var r = new FileReader();
+	        r.onload = (function(f) {
+	            return function(e) {
+	                $("#result").append(`
+	                	<label for="checkbox_${number}" id='div_${number}'>
+		                	<div class='each_div'>
+		                    	<div class='div_title'>
+									<input class="toggle-2" data-path='${path_folder}/${f.webkitRelativePath}' data-number='${number}' id='checkbox_${number}' type="checkbox"/>
+									<label class="label-2" for="checkbox_${number}"> 
+										<div class="switch-2"></div>
+									</label>
+		                    	</div>
+		                    	<div class='div_img'>
+		                    		<img src="${path_folder}/${f.webkitRelativePath}"  data-zoom-image="${path_folder}/${f.webkitRelativePath}">
+		                    	</div>
+		                    </div>
+	                    </label>
+	                `); 
+	            	number++;
+	            };
+	        })(f);
+	        r.readAsText(f);
+	    }
+	    setTimeout(function(){ 
+  			$("img").elevateZoom({
+			  zoomType: "inner",
+			  cursor: "crosshair"
+			});
+	  	}, 
+	  	3000);
+	    
+	} else {
+	      alert("Failed to load files"); 
+	}
+}
+$(document).ready(function(){  
+  	document.getElementById('fileinput').addEventListener('change', readMultipleFiles, false);
+  	
+	$('#button_delete').click(function() {
+		dem_xu_ly = 0;
+		var option = $('input:radio:checked').val();
+		switch (option){
+			case "delete_unselect":
+				$('input:checkbox:not(:checked)').each(function() {
+					var path      = $(this).data('path');
+					var number    = $(this).data('number');
+					modify_file(path,number,'delete');
+				});
+				break;
+			case "delete_select":
+				$('input:checkbox:checked').each(function() {
+					var path      = $(this).data('path');
+					var number    = $(this).data('number');
+					modify_file(path,number,'delete');
+				});
+				break;
+			case "delete_unselect_till_last_select":
+				var number_last = $(':input:checkbox:checked:last').data('number');
+				$('input:checkbox:not(:checked)').each(function(index) {
+					var number = $(this).data('number');
+					if(number >= number_last) {
+				        return false;
+				    }
+					var path      = $(this).data('path');
+					modify_file(path,number,'delete');
+				});
+				$('html, body').animate({
+			        scrollTop: $(`#div_${number_last}`).offset().top
+			    }, 1500);
+				break;
+		}
+	});
+	$('#button_save').click(function() {
+		dem_xu_ly = 0;
+		$('input:checkbox:checked').each(function() {
+			var path      = $(this).data('path');
+			folder_save   = $("#folder_save").val();
+			var number    = $(this).data('number');
+			modify_file(path,number,'save');
+		});
+	});
+});
+function modify_file(path,number,type) {
+	$.ajax({
+		url: 'modify_file.php',
+		data: {
+			path: path,
+			folder_save: folder_save,
+			type: type
+		},
+	})
+	.done(function(response) {
+		if(response=="1"){
+			dem_xu_ly++;
+			$(`#div_${number}`).remove();
+			if(type=='delete'){
+				$.notify(`Đã xoá ${dem_xu_ly} ảnh`, "success");
+			}
+			else{
+				$.notify(`Đã lưu ${dem_xu_ly} ảnh`, "success");
+			}
+		}
+		else{
+			$.notify(`Không xử lý ${file_name} được`, "error");
+		}
+	});
+}
+</script>
+</body>
+</html>
