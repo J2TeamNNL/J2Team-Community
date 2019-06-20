@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download all photos</title>
+    <style type="text/css">
+        .div_hide{
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.css">
+    <meta charset="utf-8">
+</head>
+<body> 
+<div class="container form-horizontal">
+    <h1>Code tải toàn bộ ảnh</h1>
+    <div class="form-group">
+        <h3>
+            Nhập token của bạn: 
+            <a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Nhấn vào đây để lấy token</a>
+        </h3>
+        <input type="text" id="token" class="form-control" placeholder="EAAA...." value="">
+    </div>
+    <div class="form-group div_hide" id="div_after">
+        <h3>
+            Nhập tên thư mục để tải ảnh
+        </h3>
+        <input type="text" id="folder" class="form-control" value="Facebook">
+        <h3>
+            Nhập id để tải ảnh
+            <a href="http://findmyfbid.com/" target="_blank">Nhấn vào đây để lấy id</a>
+            <br>
+            <a href="" target="_blank">Nếu không được thì xem bài này để lấy</a>
+        </h3>
+        <input type="number" id="id_object" class="form-control" value="">
+        <div id="div_profile">
+            <span id="name"></span>
+            <img id="picture">
+        </div>
+        <button class="btn btn-primary div_hide">
+            Tải
+        </button>
+    </div>
+    <div class="form-group div_hide" id="div_result" align="center">
+        <h1 id="fail">Đang tải</h1>
+        <ol id="result" reversed>
+        </ol>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script type="text/javascript">
+let token, link, type, id_object, name_object, folder;
+function checkToken() {
+    link = `https://graph.facebook.com/me?fields=id&access_token=${token}`;
+    $.ajax({
+        url: link,
+        dataType: 'json'
+    })
+    .done(function(response) {
+        if(typeof response.id!=='undefined'){
+            $("#div_after").show();
+            $("button").hide();
+        }
+        else{
+            $("#div_after").hide();
+            failToken();
+        }
+    })
+    .fail(function() {
+        $("#div_after").hide();
+        failToken();
+    });
+    
+}
+$(document).ready(function(){
+    $("#token").change(function(){
+        token = $(this).val();
+        checkToken();
+    });
+    $("#id_object").change(function(){
+        if($(this).val()!=''){
+            $("button").show();
+            id_object = $(this).val();
+            token     = $("#token").val();
+            link      = `https://graph.facebook.com?access_token=${token}&id=${id_object}&fields=name,picture.url,metadata.type&metadata=1`;
+            $.ajax({
+                url: link,
+                dataType: 'json'
+            })
+            .done(function(response) {
+                $("#div_profile").show();
+                $("#name").html(`
+                    <a href='https://fb.com/${response.id}' target='_blank'>
+                        ${response.name} (${response.metadata.type})
+                    </a>
+                `);
+                $("#picture").attr('src',response.picture.data.url);
+                type = response.metadata.type;
+                name_object = `${response.metadata.type} ${response.name}`;
+            })
+            .fail(function() {
+                $("#div_profile").hide();
+                failToken();
+            });
+        }
+        else{
+            $("#div_profile").hide();
+        }
+    })
+    $("button").click(function(e){
+        e.stopPropagation();
+        $("#div_result").hide();
+        folder = $("#folder").val();
+        if(type=='user' || type=='page'){
+            link_album = `https://graph.facebook.com/${id_object}/albums?fields=id,name&limit=50&access_token=${token}`;
+            getAlbum(link_album);
+        }
+        else{
+            link_album    = `https://graph.facebook.com/${id_object}/albums?fields=id,name&limit=50&access_token=${token}`;
+            getAlbum(link_album);
+
+            link    = `https://graph.facebook.com/${id_object}/feed?fields=full_picture&limit=100&access_token=${token}`;
+            getFeed(link);
+        }
+    });
+});
+
+function failToken() {
+    var messsage = 'Nhập token sai, hoặc bạn đã bị khoá chức năng';
+    $("#fail").html(messsage);
+}
+function getAlbum(link) {
+   $.ajax({
+        url: link,
+        dataType: 'json'
+    })
+    .done(function(response) {
+        $(response.data).each(function(){
+            getPhotoFromAlbum(this.id,this.name);
+        })
+        if(response.paging){
+            if(response.paging.next){
+                link = response.paging.next;
+                getAlbum(link);
+            }
+        }
+    })
+    .fail(function() {
+        failToken();
+    }); 
+}
+function getPhotoFromAlbum(id_album,name_album) {
+    link = `https://graph.facebook.com/${id_album}/photos?fields=source&access_token=${token}`;
+    $.ajax({
+        url: link,
+        dataType: 'json'
+    })
+    .done(function(response) {
+        $(response.data).each(function(){
+            downloadAjax(this.id,this.source,name_album);
+        })
+        if(response.paging){
+            if(response.paging.next){
+                link = response.paging.next;
+                getPhotoFromAlbum(id_album);
+            }
+        }
+    })
+    .fail(function() {
+        failToken();
+    }); 
+}
+function getFeed(link) {
+   $.ajax({
+        url: link,
+        dataType: 'json'
+    })
+    .done(function(response) {
+        $(response.data).each(function(){
+            if (typeof this.full_picture !== 'undefined') {
+                downloadAjax(this.id,this.full_picture,'group');
+            }
+        })
+        if(response.paging){
+            if(response.paging.next){
+                link = response.paging.next;
+                getFeed(link);
+            }
+        }
+    })
+    .fail(function() {
+        failToken();
+    }); 
+}
+function downloadAjax(id,source,album) {
+    link = `download_photo_from_facebook.php`;
+  
+    $.ajax({
+        url: link,
+        data:{
+            source: source,
+            id: id,
+            folder: folder,
+            album: album,
+            name_object: name_object,
+            id_object: id_object
+        }
+    })
+    .done(function(){
+        $("#div_result").show();
+        $("#result").append(`
+            <li>
+                ${id}
+            </li>
+        `);
+    }); 
+}
+</script>
+</body>
+</html>
