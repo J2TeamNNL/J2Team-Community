@@ -101,7 +101,7 @@ Detail all file
 | Unlike People | [Unlike all post on wall of someone by Id][43] |
 
 
-**Make this world better with code ♥**
+**Better Code, Better Life ♥**
 
 
    [HTML]: <https://www.w3schools.com/html>
