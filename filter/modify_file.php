@@ -1,7 +1,6 @@
 <?php 
 $path = $_GET['path'];
 if(file_exists($path)){
-	echo "1";
 	$type = $_GET['type'];
 	if($type=='save'){
 		$folder_save = $_GET['folder_save'];
