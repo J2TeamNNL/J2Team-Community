@@ -4,9 +4,13 @@
 	<title>Count Reaction Post</title>
 </head>
 <body>
-<h3>Nhập token của bạn: 
-	<a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy token trong nhóm J2Team Community</a>
-</h3>
+Bạn muốn làm cho cá nhân hay Page?
+<select id="option">
+	<option value="person">Cá nhân</option>
+	<option value="page">Page</option>
+</select>
+<h3><a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy token trong nhóm J2Team Community</a></h3>
+Nhập token của bạn: 
 <input type="text" id="token_person" placeholder="EAAA..." value=""><br>
 Token Page (Nếu muốn làm cho page)
 <input type="text" id="token_page" placeholder="EAAA..." value=""><br>
@@ -47,21 +51,26 @@ Token Page (Nếu muốn làm cho page)
 Array.prototype.unique = function() {
 	return Array.from(new Set(this));
 }
-let token_page, token_person, id_object, id_object_new, array_id, array_index = [], array_share = [], array_like = [], array_comment = [], array_unique = [], activeAjaxConnections = [], index_post = 0;
+let token, id_object, id_object_new, array_id, array_index = [], array_share = [], array_like = [], array_comment = [], array_unique = [], activeAjaxConnections = [], index_post = 0, option;
 var t = $('table').DataTable();
 $(document).ready(function(){
     $("button").click(function(e){
     	t.clear();
         e.stopPropagation();
-		token_person = $("#token_person").val();
-		token_page   = $("#token_page").val();
+        option = $("#option").val();
+        if(option=='person'){
+			token = $("#token_person").val();
+        }
+        else{
+        	token = $("#token_page").val();
+        }
 		id_object    = $("#id_object").val();
 		array_id     = $("textarea").val().split("\n");
         $.each(array_id, function(index,id_post){
         	index_post++;
         	id_object_new = `${id_object}_${id_post}`;
 
-        	link = `https://graph.facebook.com/${id_object_new}/sharedposts?limit=1000&fields=from.id&access_token=${token_person}`;
+        	link = `https://graph.facebook.com/${id_object_new}/sharedposts?limit=1000&fields=from.id&access_token=${token}`;
 			array_share[id_object_new]           = [];
 			activeAjaxConnections[id_object_new] = 2;
         	getShare(link,id_object_new);
@@ -109,7 +118,7 @@ function getShare(link,id_object_new){
 	});
 }
 function getLike(id_post,id_object_new){
-	link = `https://graph.facebook.com/${id_post}/reactions?limit=0&fields=id&summary=true&access_token=${token_page}`;
+	link = `https://graph.facebook.com/${id_post}/reactions?limit=0&fields=id&summary=true&access_token=${token}`;
 	$.ajax({
 		url: link,
 		dataType: 'json',
