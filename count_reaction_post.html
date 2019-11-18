@@ -1,21 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Count Reaction Post</title>
+    <title>Count Reactions Posts</title>
+    <style type="text/css">
+        .div_hide{
+            display: none;
+        }
+    </style>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+
 </head>
-<body>
-<h3>Nhập token của bạn: 
-	<a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy token trong nhóm J2Team Community</a>
-</h3>
-<input type="text" id="token_person" placeholder="EAAA..." value=""><br>
-Token Page (Nếu muốn làm cho page)
-<input type="text" id="token_page" placeholder="EAAA..." value=""><br>
-<h3>Nhập id trang (hoặc nhóm, hoặc cá nhân): <a href="https://findmyfbid.com" target="_blank">Tìm trên findmyfbid.com</a></h3>
-<input type="number" id="id_object" placeholder="1000...." value=""><br>
-<h3>Nhập id bài đăng, mỗi id xuống dòng nhé</h3><textarea cols="50" rows="10" placeholder="10000000
-20000000"></textarea>
-<br>
-<button>OK</button>
+<body> 
+<div class="container form-horizontal">
+<h1>Code tính lượt tương tác nhiều bài đăng (album)</h1>
+<h4>Không tính được bài đăng mình không có quyền xem</h4>
+<div class="form-group">
+    <h3>
+        Nhập token của bạn: 
+        <a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">
+            Tìm cách lấy token trong nhóm J2Team Community (bấm vào đây)
+        </a>
+    </h3>
+    <input type="text" id="token" class="form-control" placeholder="EAAA...." value="">
+</div>
+<div class="form-group div_hide" id="div_type">
+    <h3>
+        Chọn đối tượng bạn muốn tính tương tác
+    </h3>    
+    <select class="form-control" id="type">
+        <option value="profile">
+            Cá nhân Profile
+        </option>
+        <option value="page">
+            Trang Page
+        </option>
+        <option value="group">
+            Nhóm Group
+        </option>
+    </select>
+</div>
+<div class="div_hide form-group" id="div_page">
+    <h3>
+        Chọn trang muốn tính
+    </h3>
+    <select id="choose_page">
+    </select>
+</div>
+<div class="div_hide form-group" id="div_group">
+    <h3>
+        Chọn nhóm muốn tính
+    </h3>
+    <select id="choose_group">
+    </select>
+</div>
+<div class="div_hide form-group" id="div_option">
+    <h3>
+        Chọn kiểu tính
+    </h3>
+    <select id="select_type" class="form-control">
+        <option value="posts">
+            Nhiều bài đăng
+        </option>
+        <option value="album">
+            1 album
+        </option>
+    </select>
+</div>
+<div class="div_hide form-group" id="div_posts">
+    <h3>
+        Nhập link bài đăng (hoặc ID) - mỗi bài đăng cách nhau xuống dòng
+    </h3>
+    <textarea class="form-control" id="input_id_posts"></textarea>
+</div>
+<div class="div_hide form-group" id="div_album">
+    <h3>
+        Chọn album
+    </h3>
+    <select id="choose_album" class="form-control" style="height: 50px !important">
+    </select>
+</div>
+<div class="form-group" align="center">
+    <button class="btn btn-primary">OK</button>
+</div>
+<h1 style="color: red" id="error"></h1>
 <h1>Danh sách đã lọc</h1>
 <table>
 	<thead>
@@ -24,6 +94,12 @@ Token Page (Nếu muốn làm cho page)
 		</th>
 		<th>
 			ID Bài Đăng
+		</th>
+		<th>
+			Nội Dung
+		</th>
+		<th>
+			Ảnh
 		</th>
 		<th>
 			Like
@@ -36,53 +112,319 @@ Token Page (Nếu muốn làm cho page)
 		</th>
 	</thead>
 </table>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
 
-
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.dataTables.min.css"/>
  
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>	
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>	
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.0/js/dataTables.buttons.min.js"></script>	
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.flash.min.js"></script>	
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.html5.min.js"></script>	
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.print.min.js"></script>	
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>	
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>	
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>	
 <script>
 Array.prototype.unique = function() {
 	return Array.from(new Set(this));
 }
-let token_page, token_person, id_object, id_object_new, array_id, array_index = [], array_share = [], array_like = [], array_comment = [], array_unique = [], activeAjaxConnections = [], index_post = 0;
-var t = $('table').DataTable();
+let token, id_object, id_object_new, array_id = [], array_index = [], array_share = [], array_like = [], array_comment = [], array_unique = [], array_message = [], array_photo = [], activeAjaxConnections = [], index_post = 0, option, id_peron;
+var t = $('table').DataTable( {
+	dom: 'Bfrtip',
+    buttons: [
+        'copy', 'excel', 'pdf', 'print', 'csv'
+    ]
+} );
+var version = 'v3.1';
+var link_api = `https://graph.facebook.com/${version}`;
+var fields_share = `from{id}`;
+var fields_info = `message,reactions.summary(1).limit(0),attachments{media{image{src}}}`;
+function checkToken(token) {
+	var link_check_token = `${link_api}/me`;
+	var fields_debug_token = `id`;
+	$.ajax({
+		url: link_check_token,
+		type: 'GET',
+		dataType: 'json',
+		data: {
+			access_token: token
+		},
+	})
+	.done(function(response) {
+		$("#error").hide();
+		id_person = response.id;
+		$("#div_type").show();
+		$("#div_option").show();
+		$("#div_posts").show();
+		$("#div_ablum").show();
+	})
+	.fail(function() {
+		failToken();
+	});
+}
+function failToken() {
+	$("#error").show();
+	$(".div_hide").hide();
+	$("#error").html('Lỗi token');
+}
+function formatState (state) {
+  if (!state.id) {
+    return state.text;
+  }
+  var $state = $(
+    `<span>${state.text}</span>`
+  );
+  return $state;
+};
+
+function getPage() {
+    link = `${link_api}/me/accounts?fields=name,access_token&access_token=${token}`;
+    $.ajax({
+        url: link,
+        dataType: 'json'
+    })
+    .done(function(response) {
+        $("#choose_page").html('');
+        $(response.data).each(function(){
+            $("#choose_page").prepend(`
+            <option value='${this.id}' data-access_token='${this.access_token}'>
+                ${this.name}
+            </option>`);            
+        })
+    })
+    .fail(function() {
+        failToken();
+    });
+}
+function getType() {
+	var type = $("#type").val();
+	switch(type){
+        case 'profile':
+            id_object = 'me';
+        break;
+        case 'page':
+        	token      = $('#choose_page').find(':selected').data('access_token');
+            id_object  = $("#choose_page").val();
+            break;
+        case 'group':
+        	id_object  = $("#choose_group").val();
+            break;
+    }
+}
+function getAlbum() {
+	getType();
+    link_get_album = `${link_api}/${id_object}/albums`;
+    var fields_album = `name,cover_photo{images{source}}`;
+    $("#choose_album").select2("destroy");
+	$("#choose_album").html("<option></option>");
+    $("#choose_album").select2({
+	    ajax: {
+    		url: link_get_album,
+    		dataType: 'json',
+    		data: function () {
+	        	return {
+			        access_token: token,
+			        fields : fields_album
+			    };
+			},
+			processResults: function (response) {
+		      	return {
+			      	results: $.map(response.data, function (item) {
+			      		if(item.cover_photo){
+			        		if(item.cover_photo.images){
+					            $("#choose_album").prepend();
+					            return {
+			                        text: `<img src='${item.cover_photo.images[0].source}' height='50' width='50'>${item.name}`,
+			                        id: item.id
+			                    }        
+			        		}
+			        	}
+	                    
+	                })
+		      	};
+	  		}
+		},
+	    templateResult: formatState,
+	    templateSelection: formatState
+	});
+}
+
+function getGroup() {
+    link = `${link_api}/me/groups?fields=name&access_token=${token}`;
+    $.ajax({
+        url: link,
+        dataType: 'json'
+    })
+    .done(function(response) {
+        $("#choose_group").html('');
+        $(response.data).each(function(){
+            $("#choose_group").prepend(`<option value='${this.id}'>${this.name}</option>`);            
+        })
+    })
+    .fail(function() {
+        failToken();
+    });
+}
 $(document).ready(function(){
+	$('#choose_group').select2({
+        theme: "bootstrap"
+    });
+    $('#choose_page').select2({
+        theme: "bootstrap"
+    });
+    $('#choose_album').select2({
+        theme: "bootstrap"
+    });
+    $("#select_type").change(function() {
+    	var select_type = $(this).val();
+    	switch(select_type){
+    		case 'posts':
+    			$("#div_album").hide();
+		    	$("#div_posts").show();
+    			break;
+    		case 'album':
+    			$("#div_posts").hide();
+		    	$("#div_album").show();
+		    	getAlbum();
+    			break;
+    	}
+    });
+
+    $("#choose_page").change(function() {
+    	token      = $('#choose_page').find(':selected').data('access_token');
+        id_object  = $("#choose_page").val();
+    	getAlbum();
+    });
+    $('#input_id_posts').change(function(){
+    	var text = $(this).val();
+    	var array = text.split('\n');
+    	var regex_id = /(?<=(?:posts\/|vb\.\d+\/|fbid\=)|permalink\/|videos\/|a\.\d+\/|notes\/(?:[\w\d\-\%]+\/){2}|photo_id\=|photo\=|tl_objid\.|view\=permalink\&id\=)(?<id>\d+)/;
+    	var string = '';
+    	$(array).each(function(index, value) {
+    		if(isNaN(value)){
+	    		var array = value.match(regex_id);
+	    		value = array.groups.id;
+    		}
+    		string += value + '\n';
+    	});
+    	$(this).val(string);
+    });
+    $("#token").change(function(){	
+        $("#div_group").hide();
+        $("#div_page").hide();
+        token = $(this).val();
+        checkToken(token);
+    })
+    $("#type").change(function(){
+    	var type = $(this).val();
+        switch(type){
+            case 'profile':
+                id_object = 'me';
+                $("#div_group").hide();
+        		$("#div_page").hide();
+            break;
+            case 'page':
+            	$("#div_group").hide();
+        		$("#div_page").show();
+        		getPage();
+                break;
+            case 'group':
+            	$("#div_group").show();
+        		$("#div_page").hide();
+        		getGroup();
+                break;
+        }
+    })
+
+
     $("button").click(function(e){
     	t.clear();
+    	index_post = 0;
         e.stopPropagation();
-		token_person = $("#token_person").val();
-		token_page   = $("#token_page").val();
-		id_object    = $("#id_object").val();
-		array_id     = $("textarea").val().split("\n");
-        $.each(array_id, function(index,id_post){
-        	index_post++;
-        	id_object_new = `${id_object}_${id_post}`;
-
-        	link = `https://graph.facebook.com/${id_object_new}/sharedposts?limit=1000&fields=from.id&access_token=${token_person}`;
-			array_share[id_object_new]           = [];
-			activeAjaxConnections[id_object_new] = 2;
-        	getShare(link,id_object_new);
-			// array_comment[id_object_new]         = 0;
-        	// getComment(id_post,id_object_new);
-
-			array_index[id_object_new] = index_post;
-
-			array_like[id_object_new] = 0;
-        	getLike(id_post,id_object_new);
-       });
+        select_type = $("#select_type").val();
+		if(!id_object || id_object=='me'){
+			id_object = id_person;
+		}
+        switch(select_type){
+        	case "posts":
+				array_id = $("textarea").val().split("\n");
+				executeQuery();
+        		break;
+        	case "album":
+				getArrayIdPhotoOfAlbum();
+        		break;
+        }
+       
     });
 });
+function executeQuery() {
+	console.log(array_id);
+	 $.each(array_id, function(index,id_post){
+    	index_post++;
+
+    	id_object_new = `${id_object}_${id_post}`;
+    	link = `${link_api}/${id_object_new}/sharedposts?fields=${fields_share}&limit=1000&access_token=${token}`;
+		array_share[id_object_new]           = [];
+		activeAjaxConnections[id_object_new] = 2;
+    	getShare(link,id_object_new);
+		// array_comment[id_object_new]         = 0;
+    	// getComment(id_post,id_object_new);
+
+		array_index[id_object_new] = index_post;
+
+		array_like[id_object_new] = 0;
+		array_message[id_object_new] = '';
+		array_photo[id_object_new] = '';
+    	getInfo(id_object_new);
+   });
+}
+function getArrayIdPhotoOfAlbum() {
+	var id_album = $("#choose_album").val();
+	link_photo_of_album = `${link_api}/${id_album}/photos`;
+	var fields_album = `name,images`;
+	var limit = 100;
+	array_id = [];
+	$.ajax({
+		url: link_photo_of_album,
+		type: 'GET',
+		dataType: 'json',
+		data: {
+			access_token: token,
+			fields: fields_album,
+			limit: limit
+		},
+	})
+	.done(function(response) {
+		$.each(response.data, function(index,each){
+			array_id.push(each.id);
+			if(index==response.data.length-1){
+				executeQuery();
+			}
+		});
+	})
+	.fail(function() {
+		failToken();
+	});
+}
 function getShare(link,id_object_new){
 	$.ajax({
 		url: link,
-		dataType: 'json',
+		dataType: 'json'
 	})
-	.success(function(response) {
+	.done(function(response) {
 		$.each(response.data, function(index,each){
-			array_share[id_object_new].push(each.from.id);
+			var string_id = '';
+			var id_posted = each.id.split('_')[0];
+			if(each.from){
+				string_id = `${each.from.id}_${id_posted}`;
+			}
+			else{
+				string_id = `${id_posted}_${id_posted}`;
+			}
+			array_share[id_object_new].push(string_id);
 		});
 		if(response.paging){
 			if(response.paging.next){
@@ -104,19 +446,25 @@ function getShare(link,id_object_new){
 		}
 	})
 	.fail(function() {
-		getShare(link,id_object_new);
+		// getShare(link,id_object_new);
 		// alert("Bạn đã nhập 1 cái gì đó sai sai");
 	});
 }
-function getLike(id_post,id_object_new){
-	link = `https://graph.facebook.com/${id_post}/reactions?limit=0&fields=id&summary=true&access_token=${token_page}`;
+function getInfo(id_object_new){
+	link = `${link_api}/${id_object_new}?fields=${fields_info}&access_token=${token}`;
 	$.ajax({
 		url: link,
 		dataType: 'json',
 	})
-	.success(function(response) {
-		if(response.summary){
-			array_like[id_object_new] = response.summary.total_count;
+	.done(function(response) {
+		if(response.message){
+			array_message[id_object_new] = response.message;
+		}
+		if(response.attachments){
+			array_photo[id_object_new] = response.attachments.data[0].media.image.src;
+		}
+		if(response.reactions){
+			array_like[id_object_new] = response.reactions.summary.total_count;
 		}
 		activeAjaxConnections[id_object_new]--;
 		if(activeAjaxConnections[id_object_new]==0){
@@ -124,7 +472,6 @@ function getLike(id_post,id_object_new){
 		}
 	})
 	.fail(function() {
-		getLike(id_post,id_object_new);
 		// alert("Bạn đã nhập 1 cái gì đó sai sai");
 	});
 }
@@ -146,11 +493,13 @@ function getLike(id_post,id_object_new){
 // }
 function getResult(id_object_new){
 	array_unique = array_share[id_object_new].unique();
-	console.log(id_object_new,array_share[id_object_new],array_unique);
+	// array_unique = array_share[id_object_new];
 	index = array_index[id_object_new];
 	t.row.add( [
         index,
         `<a href="https://fb.com/${id_object_new}" target="_blank">fb.com/${id_object_new}</a>`,
+        array_message[id_object_new],
+        `<img src='${array_photo[id_object_new]}' height='200'>`,
         array_like[id_object_new],
         // array_comment[id_object_new],
         array_unique.length

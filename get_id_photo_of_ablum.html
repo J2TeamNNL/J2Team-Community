@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Get ID Photo Album</title>
+</head>
+<body>
+Bạn muốn làm cho Profile cá nhân hay Page?
+<select id="option">
+	<option value="person">Cá nhân</option>
+	<option value="page">Page</option>
+</select>
+<h3><a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy token trong nhóm J2Team Community</a></h3>
+Nhập token Profile cá nhân: 
+<input type="text" id="token_person" placeholder="EAAA..." value=""><br>
+Token Page (Nếu muốn làm cho page)
+<input type="text" id="token_page" placeholder="EAAA..." value=""><br>
+<h3>Nhập id Page (hoặc Group, hoặc Profile cá nhân): <a href="https://findmyfbid.com" target="_blank">Tìm trên findmyfbid.com</a></h3>
+<input type="number" id="id_object" placeholder="1000...." value=""><br>
+Nhập id Album
+<input type="number" id="id_album" placeholder="EAAA..." value=""><br>
+<br>
+<button>OK</button>
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<h3>Kết quả</h3>
+<textarea id="result"></textarea>
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+let token, id_album, array_id = [],activeAjaxConnections, option;
+var version = 'v2.6';
+var link_api = `https://graph.facebook.com/${version}`;
+var fields_photo = `id`;
+var limit = 100;
+
+$(document).ready(function(){
+    $("button").click(function(e){
+    	$("#result").val('');
+        e.stopPropagation();
+        option = $("#option").val();
+        if(option=='person'){
+			token = $("#token_person").val();
+        }
+        else{
+        	token = $("#token_page").val();
+        }
+		id_album    = $("#id_album").val();
+    	link = `${link_api}/${id_album}/photos?fields=${fields_photo}&limit=${limit}&access_token=${token}`;
+		activeAjaxConnections = 1;
+    	getPhoto(link);
+    });
+});
+function getPhoto(link){
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.success(function(response) {
+		$.each(response.data, function(index,each){
+			array_id.push(each.id);
+		});
+		if(response.paging){
+			if(response.paging.next){
+				link = response.paging.next;
+				getPhoto(link);
+			}
+			else{
+				activeAjaxConnections--;
+				if(activeAjaxConnections==0){
+					getResult();
+				}
+			}
+		}
+		else{
+			activeAjaxConnections--;
+			if(activeAjaxConnections==0){
+				getResult();
+			}
+		}
+	})
+	.fail(function() {
+		// getShare(link,id_object_new);
+		// alert("Bạn đã nhập 1 cái gì đó sai sai");
+	});
+}
+function getResult(){
+	var string = $("#result").val(array_id.join('\n'));
+}
+</script>
+</body>
+</html>
