@@ -428,7 +428,7 @@ function getShare(link,id_object_new){
 			var check_false = 0; 
 			if(each.message){
 				$(share_content).each(function(key,value) {
-					if(!each.message.includes(value)){
+					if(!each.message.toLowerCase().includes(value.toLowerCase())){
 						check_false = 1;
 						return false;
 					}
