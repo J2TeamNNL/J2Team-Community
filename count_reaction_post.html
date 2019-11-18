@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
 
 </head>
-<<<<<<< HEAD
 <body> 
 <div class="container form-horizontal">
 <h1>Code tính lượt tương tác nhiều bài đăng (album)</h1>
@@ -87,25 +86,6 @@
     <button class="btn btn-primary">OK</button>
 </div>
 <h1 style="color: red" id="error"></h1>
-=======
-<body>
-Bạn muốn làm cho cá nhân hay Page?
-<select id="option">
-	<option value="person">Cá nhân</option>
-	<option value="page">Page</option>
-</select>
-<h3><a href="https://www.facebook.com/groups/j2team.community/search/?query=token" target="_blank">Tìm cách lấy token trong nhóm J2Team Community</a></h3>
-Nhập token của bạn: 
-<input type="text" id="token_person" placeholder="EAAA..." value=""><br>
-Token Page (Nếu muốn làm cho page)
-<input type="text" id="token_page" placeholder="EAAA..." value=""><br>
-<h3>Nhập id trang (hoặc nhóm, hoặc cá nhân): <a href="https://findmyfbid.com" target="_blank">Tìm trên findmyfbid.com</a></h3>
-<input type="number" id="id_object" placeholder="1000...." value=""><br>
-<h3>Nhập id bài đăng, mỗi id xuống dòng nhé</h3><textarea cols="50" rows="10" placeholder="10000000
-20000000"></textarea>
-<br>
-<button>OK</button>
->>>>>>> a9dd227d4c7d81df151329863ac3e84d7962c721
 <h1>Danh sách đã lọc</h1>
 <table>
 	<thead>
@@ -151,7 +131,6 @@ Token Page (Nếu muốn làm cho page)
 Array.prototype.unique = function() {
 	return Array.from(new Set(this));
 }
-<<<<<<< HEAD
 let token, id_object, id_object_new, array_id = [], array_index = [], array_share = [], array_like = [], array_comment = [], array_unique = [], array_message = [], array_photo = [], activeAjaxConnections = [], index_post = 0, option, id_peron;
 var t = $('table').DataTable( {
 	dom: 'Bfrtip',
@@ -289,10 +268,6 @@ function getGroup() {
         failToken();
     });
 }
-=======
-let token, id_object, id_object_new, array_id, array_index = [], array_share = [], array_like = [], array_comment = [], array_unique = [], activeAjaxConnections = [], index_post = 0, option;
-var t = $('table').DataTable();
->>>>>>> a9dd227d4c7d81df151329863ac3e84d7962c721
 $(document).ready(function(){
 	$('#choose_group').select2({
         theme: "bootstrap"
@@ -369,7 +344,6 @@ $(document).ready(function(){
     	t.clear();
     	index_post = 0;
         e.stopPropagation();
-<<<<<<< HEAD
         select_type = $("#select_type").val();
 		if(!id_object || id_object=='me'){
 			id_object = id_person;
@@ -398,27 +372,6 @@ function executeQuery() {
     	getShare(link,id_object_new);
 		// array_comment[id_object_new]         = 0;
     	// getComment(id_post,id_object_new);
-=======
-        option = $("#option").val();
-        if(option=='person'){
-			token = $("#token_person").val();
-        }
-        else{
-        	token = $("#token_page").val();
-        }
-		id_object    = $("#id_object").val();
-		array_id     = $("textarea").val().split("\n");
-        $.each(array_id, function(index,id_post){
-        	index_post++;
-        	id_object_new = `${id_object}_${id_post}`;
-
-        	link = `https://graph.facebook.com/${id_object_new}/sharedposts?limit=1000&fields=from.id&access_token=${token}`;
-			array_share[id_object_new]           = [];
-			activeAjaxConnections[id_object_new] = 2;
-        	getShare(link,id_object_new);
-			// array_comment[id_object_new]         = 0;
-        	// getComment(id_post,id_object_new);
->>>>>>> a9dd227d4c7d81df151329863ac3e84d7962c721
 
 		array_index[id_object_new] = index_post;
 
@@ -497,13 +450,8 @@ function getShare(link,id_object_new){
 		// alert("Bạn đã nhập 1 cái gì đó sai sai");
 	});
 }
-<<<<<<< HEAD
 function getInfo(id_object_new){
 	link = `${link_api}/${id_object_new}?fields=${fields_info}&access_token=${token}`;
-=======
-function getLike(id_post,id_object_new){
-	link = `https://graph.facebook.com/${id_post}/reactions?limit=0&fields=id&summary=true&access_token=${token}`;
->>>>>>> a9dd227d4c7d81df151329863ac3e84d7962c721
 	$.ajax({
 		url: link,
 		dataType: 'json',
