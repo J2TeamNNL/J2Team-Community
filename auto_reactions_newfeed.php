@@ -25,8 +25,8 @@ foreach($datas as $each){
         $split   = explode("_", $id_lay);
         $id_post = $split[0];
         if(!in_array($id_post,$array_avoid)){
-            $all_type    = ["LOVE", "HAHA", "LIKE", "ANGRY", "SAD"];//có 5 trạng thái
-            $type        = $all_type[rand(0,4)]; //bạn có thể để random từ 0 -> 4 hoặc để số thay rand()
+            $all_type    = ["LOVE", "HAHA", "LIKE", "ANGRY", "SAD", "WOW"];//có 6 trạng thái
+            $type        = $all_type[rand(0,5)]; //bạn có thể để random từ 0 -> 5 hoặc để số thay rand()
             $links = "https://graph.facebook.com/$id_lay/reactions?type=$type&method=post&access_token=$token";
             $curls = curl_init();
             curl_setopt_array($curls, array(
