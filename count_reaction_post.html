@@ -111,9 +111,9 @@
 		<th>
 			Like
 		</th>
-		<!-- <th>
+		<th>
 			Comment
-		</th> -->
+		</th>
 		<th>
 			Share
 		</th>
@@ -150,6 +150,7 @@ var t = $('table').DataTable( {
 var version = 'v3.1';
 var link_api = `https://graph.facebook.com/${version}`;
 var fields_share = `from{id},message`;
+var fields_comment = `from{id}`;
 var fields_info = `message,reactions.summary(1).limit(0),attachments{media{image{src}}}`;
 function checkToken(token) {
 	var link_check_token = `${link_api}/me`;
@@ -376,13 +377,13 @@ function executeQuery() {
     	index_post++;
 
     	id_object_new = `${id_object}_${id_post}`;
-        console.log(id_object);
+        // console.log(id_object);
     	link = `${link_api}/${id_object_new}/sharedposts?fields=${fields_share}&limit=1000&access_token=${token}`;
 		array_share[id_object_new]           = [];
 		activeAjaxConnections[id_object_new] = 2;
     	getShare(link,id_object_new);
-		// array_comment[id_object_new]         = 0;
-    	// getComment(id_post,id_object_new);
+		array_comment[id_object_new]         = [];
+    	getComment(id_object_new);
 
 		array_index[id_object_new] = index_post;
 
@@ -435,17 +436,17 @@ function getShare(link,id_object_new){
 						return false;
 					}
 				});
-				if(check_false==0){
-					var string_id = '';
-					var id_posted = each.id.split('_')[0];
-					if(each.from){
-						string_id = `${each.from.id}_${id_posted}`;
-					}
-					else{
-						string_id = `${id_posted}_${id_posted}`;
-					}
-					array_share[id_object_new].push(string_id);
+            }
+			if(check_false==0){
+				var string_id = '';
+				var id_posted = each.id.split('_')[0];
+				if(each.from){
+					string_id = `${each.from.id}_${id_posted}`;
 				}
+				else{
+					string_id = `${id_posted}_${id_posted}`;
+				}
+				array_share[id_object_new].push(string_id);
 			}
 		});
 		if(response.paging){
@@ -497,25 +498,29 @@ function getInfo(id_object_new){
 		// alert("Bạn đã nhập 1 cái gì đó sai sai");
 	});
 }
-// function getComment(id_post,id_object_new){
-// 	link = `https://graph.facebook.com/${id_post}/comments?limit=1000&access_token=${token}`;
-// 	$.ajax({
-// 		url: link,
-// 		dataType: 'json',
-// 	})
-// 	.success(function(response) {
-// 		if(response.comments){
-// 			array_comment[id_object_new] = response.comments.count;
-// 		}
-// 		activeAjaxConnections[id_object_new]--;
-// 		if(activeAjaxConnections[id_object_new]==0){
-// 			getResult(id_object_new);
-// 		}
-// 	})
-// }
+function getComment(id_object_new){
+	link = `https://graph.facebook.com/${id_object_new}/comments?fields=${fields_comment}&limit=5000&access_token=${token}`;
+	$.ajax({
+		url: link,
+		dataType: 'json',
+	})
+	.done(function(response) {
+        $.each(response.data, function(index,each){
+            console.log(each);
+            if(each.from.id){
+                array_comment[id_object_new].push(each.from.id);
+            }
+        })
+		activeAjaxConnections[id_object_new]--;
+		if(activeAjaxConnections[id_object_new]==0){
+			getResult(id_object_new);
+		}
+	})
+}
 function getResult(id_object_new){
-	array_unique = array_share[id_object_new].unique();
-	// array_unique = array_share[id_object_new];
+	array_share = array_share[id_object_new].unique();
+    array_comment = array_comment[id_object_new].unique();
+	// // array_unique = array_share[id_object_new];
 	index = array_index[id_object_new];
 	t.row.add( [
         index,
@@ -523,8 +528,8 @@ function getResult(id_object_new){
         array_message[id_object_new],
         `<img src='${array_photo[id_object_new]}' height='200'>`,
         array_like[id_object_new],
-        // array_comment[id_object_new],
-        array_unique.length
+        array_comment.length,
+        array_share.length
     ] ).draw( true );
 }
 </script>
