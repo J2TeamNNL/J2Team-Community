@@ -63,6 +63,18 @@ Array.prototype.unique = function() {
 }
 let token, id_post, number_winner, count_winner, tagging, duplicate, array_comment = [], object, count = 0, summary, left, name, id_person, data, type_win;
 var t = $('table').DataTable();
+function getIdPost() {
+	id_post_temp = $("#id_post").val();
+	token   = $("#token").val();
+	$.ajax({
+		url: `https://graph.facebook.com/${id_post_temp}/?fields=id&access_token=${token}`,
+	})
+	.done(function(response) {
+		id_post = response.id;
+		// getSummary();
+		getComment();
+	});
+}
 $(document).ready(function(){
 	$("#text").css('display','none');
 	$("#load").css('display','none');
@@ -71,8 +83,6 @@ $(document).ready(function(){
         e.stopPropagation();
 		$("#load").css('display','block');
 		$("#href_result").hide();
-		token         = $("#token").val();
-		id_post       = $("#id_post").val();
 		type_win       = $("#type_win").val();
 		if(type_win==0){
 			number_winner = Math.floor((Math.random() * 9999) + 1);
@@ -80,20 +90,22 @@ $(document).ready(function(){
 		count_winner  = $("#count_winner").val();
 		tagging       = $("#tagging").val();
 		duplicate     = $("#duplicate").val();
-		getSummary();
+
+		getIdPost();
+		
     });
 });
-function getSummary() {
-	link = `https://graph.facebook.com/${id_post}/?order=chronological&fields=comments&summary=true&access_token=${token}`;
-	$.ajax({
-		url: link,
-		dataType: 'json',
-	})
-	.success(function(response) {
-		summary = response.comments.count;
-		getComment();
-	})
-}
+// function getSummary() {
+// 	link = `https://graph.facebook.com/${id_post}/?order=chronological&fields=comments&summary=true&access_token=${token}`;
+// 	$.ajax({
+// 		url: link,
+// 		dataType: 'json',
+// 	})
+// 	.success(function(response) {
+// 		summary = response.comments.count;
+// 		getComment();
+// 	})
+// }
 function getComment(){
 	link = `https://graph.facebook.com/${id_post}/comments?limit=5000&order=chronological&fields=from,message&access_token=${token}`;
 	$.ajax({
@@ -172,7 +184,8 @@ function getResult(){
 		array_winner.push(array_comment[key]);	
 	    array_comment.splice(key, 1);
 	}
-	var text = `Chúc mừng ${count_winner} bạn sau trong tổng số ${summary} bình luận:\n`;
+	// var text = `Chúc mừng ${count_winner} bạn sau trong tổng số ${summary} bình luận:\n`;
+	var text = `Chúc mừng ${count_winner} bạn sau\n`;
 	if(type_win==0){
 		text += `, số trúng thưởng là ${number_winner}`;
 	}

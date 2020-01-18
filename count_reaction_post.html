@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+    <link rel="stylesheet" href="http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
 
 </head>
 <body> 
@@ -82,6 +83,12 @@
     <select id="choose_album" class="form-control" style="height: 50px !important">
     </select>
 </div>
+<div class="div_hide form-group" id="div_share_content">
+    <h3>
+        Trong bài chia sẻ phải bao gồm: (có thể để trống)
+    </h3>
+    <input type="text" id="share_content" data-role="tagsinput" class="form-control" style="height: 50px !important">
+</div>
 <div class="form-group" align="center">
     <button class="btn btn-primary">OK</button>
 </div>
@@ -115,6 +122,8 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script src="http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.dataTables.min.css"/>
@@ -131,7 +140,7 @@
 Array.prototype.unique = function() {
 	return Array.from(new Set(this));
 }
-let token, id_object, id_object_new, array_id = [], array_index = [], array_share = [], array_like = [], array_comment = [], array_unique = [], array_message = [], array_photo = [], activeAjaxConnections = [], index_post = 0, option, id_peron;
+let token, id_object, id_object_new, array_id = [], array_index = [], array_share = [], array_like = [], array_comment = [], array_unique = [], array_message = [], array_photo = [], activeAjaxConnections = [], index_post = 0, option, id_peron, share_content = [];
 var t = $('table').DataTable( {
 	dom: 'Bfrtip',
     buttons: [
@@ -140,7 +149,7 @@ var t = $('table').DataTable( {
 } );
 var version = 'v3.1';
 var link_api = `https://graph.facebook.com/${version}`;
-var fields_share = `from{id}`;
+var fields_share = `from{id},message`;
 var fields_info = `message,reactions.summary(1).limit(0),attachments{media{image{src}}}`;
 function checkToken(token) {
 	var link_check_token = `${link_api}/me`;
@@ -158,6 +167,7 @@ function checkToken(token) {
 		id_person = response.id;
 		$("#div_type").show();
 		$("#div_option").show();
+		$("#div_share_content").show();
 		$("#div_posts").show();
 		$("#div_ablum").show();
 	})
@@ -301,7 +311,7 @@ $(document).ready(function(){
     $('#input_id_posts').change(function(){
     	var text = $(this).val();
     	var array = text.split('\n');
-    	var regex_id = /(?<=(?:posts\/|vb\.\d+\/|fbid\=)|permalink\/|videos\/|a\.\d+\/|notes\/(?:[\w\d\-\%]+\/){2}|photo_id\=|photo\=|tl_objid\.|view\=permalink\&id\=)(?<id>\d+)/;
+    	var regex_id = /(?<=(?:posts\/|vb\.\d+\/|fbid\=)|permalink\/|videos\/|a\.\d+\/|notes\/|photo_id\=|photo\=|tl_objid\.|view\=permalink\&id\=)(?<id>\d+)/;
     	var string = '';
     	$(array).each(function(index, value) {
     		if(isNaN(value)){
@@ -339,11 +349,12 @@ $(document).ready(function(){
         }
     })
 
-
     $("button").click(function(e){
     	t.clear();
     	index_post = 0;
+    	share_content = $("#share_content").tagsinput('items');
         e.stopPropagation();
+        getType();
         select_type = $("#select_type").val();
 		if(!id_object || id_object=='me'){
 			id_object = id_person;
@@ -361,11 +372,11 @@ $(document).ready(function(){
     });
 });
 function executeQuery() {
-	console.log(array_id);
 	 $.each(array_id, function(index,id_post){
     	index_post++;
 
     	id_object_new = `${id_object}_${id_post}`;
+        console.log(id_object);
     	link = `${link_api}/${id_object_new}/sharedposts?fields=${fields_share}&limit=1000&access_token=${token}`;
 		array_share[id_object_new]           = [];
 		activeAjaxConnections[id_object_new] = 2;
@@ -416,15 +427,26 @@ function getShare(link,id_object_new){
 	})
 	.done(function(response) {
 		$.each(response.data, function(index,each){
-			var string_id = '';
-			var id_posted = each.id.split('_')[0];
-			if(each.from){
-				string_id = `${each.from.id}_${id_posted}`;
+			var check_false = 0; 
+			if(each.message){
+				$(share_content).each(function(key,value) {
+					if(!each.message.toLowerCase().includes(value.toLowerCase())){
+						check_false = 1;
+						return false;
+					}
+				});
+				if(check_false==0){
+					var string_id = '';
+					var id_posted = each.id.split('_')[0];
+					if(each.from){
+						string_id = `${each.from.id}_${id_posted}`;
+					}
+					else{
+						string_id = `${id_posted}_${id_posted}`;
+					}
+					array_share[id_object_new].push(string_id);
+				}
 			}
-			else{
-				string_id = `${id_posted}_${id_posted}`;
-			}
-			array_share[id_object_new].push(string_id);
 		});
 		if(response.paging){
 			if(response.paging.next){
