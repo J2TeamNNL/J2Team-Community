@@ -7,7 +7,7 @@
   - Add Friend
   - Auto Reactions
   - Change Privacy
-  - Count Reations Post
+  - Count Reactions Post
   - Delete Friend (Member)
   - Delete Post (Person, Page, Group)
   - Delete Note (Photo)
@@ -50,7 +50,7 @@ Technology I use
 
 ### Describe more
 
-Detail all file
+Detail all file 
 
 | Feature | Detail |
 | ------ | ------ |
