@@ -5,7 +5,7 @@
 
 # All the tool about Facebook (as for now):
   - Add Friend
-  - Auto Reations
+  - Auto Reactions
   - Change Privacy
   - Count Reations Post
   - Delete Friend (Member)
