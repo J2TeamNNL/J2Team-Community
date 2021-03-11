@@ -40,11 +40,11 @@ Follow me or this git to see more
 
 Technology I use
 
-* [HTML]
-* [Bootstrap]
-* [JavaScript]
-* [jQuery]
-* [PHP]
+* HTML
+* Bootstrap
+* JavaScript
+* jQuery
+* PHP
 
 ### Describe more
 
@@ -100,15 +100,6 @@ Detail all file
 
 
 **Better Code, Better Life ♥**
-
-
-   [HTML]: <https://www.w3schools.com/html>
-   [CSS]: <https://www.w3schools.com/css>
-   [JavaScript]: <https://www.w3schools.com/js>
-   [jQuery]: <https://www.w3schools.com/jquery>
-   [PHP]: <https://www.w3schools.com/php>
-   [MySQL]: <https://www.w3schools.com/mysql>
-   [Laravel]: <https://laravel.com/docs/>
 
    [1]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/add_friend.js>
    [2]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/add_friend_by_id.php>
