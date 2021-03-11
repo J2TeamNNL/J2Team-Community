@@ -41,12 +41,10 @@ Follow me or this git to see more
 Technology I use
 
 * [HTML]
-* [CSS]
+* [Bootstrap]
 * [JavaScript]
 * [jQuery]
 * [PHP]
-* [MySQL]
-* [Laravel]
 
 ### Describe more
 
