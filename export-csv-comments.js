@@ -1,4 +1,4 @@
-// dùng trên trình duyệt
+// dùng trên trình duyệt máy tính
 // truy cập vào đường link bài đăng. VD: https://www.facebook.com/groups/j2team.community/posts/793663744299081
 // thay thế www thành m. VD: https://m.facebook.com/groups/j2team.community/posts/793663744299081
 // ấn chuột phải, chọn Inspect
