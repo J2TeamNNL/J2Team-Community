@@ -12,6 +12,7 @@
   - Delete Post (Person, Page, Group)
   - Delete Note (Photo)
   - Download Photo or Video (Person, Page, Group)
+  - Export CSC Comments
   - Filter Age (Gender)
   - Get ID (describe below)
   - Invite Friend To Group
@@ -69,6 +70,7 @@ Detail all file
 | Delete Post | [Delete all post (of person, page or group)][14] |
 | Download Photo From Group | [Download all photo (of group)][15] |
 | Download Photo From Page Or Profile | [Download all photo (of page or person)][16] |
+| Export CSV Comments | [Export csv all comments from a post, video or photo][46] |
 | Filer Age | [Filter age by list id][17] |
 | Filer Gender | [Filter gender by list id][18] |
 | Get Email From Comment | [Get all valid email from comment of post ][44] |
@@ -146,3 +148,4 @@ Detail all file
    [43]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/unlike_people.php>
    [44]: <https://j2teamnnl.github.io/J2Team-Community/get_email_comment_from_post.html>
    [45]: <https://j2teamnnl.github.io/J2Team-Community/delete_comment.html>
+   [46]: <https://github.com/J2TeamNNL/J2Team-Community/blob/master/export-csv-comments.js>
