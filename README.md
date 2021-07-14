@@ -12,7 +12,7 @@
   - Delete Post (Person, Page, Group)
   - Delete Note (Photo)
   - Download Photo or Video (Person, Page, Group)
-  - Export CSC Comments
+  - Export CSV Comments
   - Filter Age (Gender)
   - Get ID (describe below)
   - Invite Friend To Group
