@@ -10,6 +10,7 @@ const authorIdPost = getAuthorId(document.querySelector('div._67lm._77kc'));
 let arrPeople = [];
 
 function loadAllComments() {
+  console.log(`Đang chạy loadAllComments...`);
   const loop = setInterval(function(){ 
     let btnClickMore = document.querySelector('a._108_.hoverZoomFetched'); 
     if(btnClickMore){
@@ -23,6 +24,7 @@ function loadAllComments() {
 }
 
 function loadAllReplyComments() {
+  console.log(`Đang chạy loadAllReplyComments...`);
   const loop = setInterval(function(){ 
     let btnClickMore = document.querySelectorAll('div[id^=comment_replies_more]');
     if(btnClickMore.length){
@@ -36,6 +38,7 @@ function loadAllReplyComments() {
 }
 
 function getComments() {
+  console.log(`Đang chạy getComments...`);
   const comments = document.querySelectorAll('div._2a_i');
   const lengthComments = comments.length;
   comments.forEach(function(el, index){
@@ -53,7 +56,7 @@ function getComments() {
       let commentId = comment.getAttribute("data-commentid");
       let commentContent = comment.textContent;
 
-      // lọc trùng người bình luận, mỗi người chỉ được tính 1 lần
+      // find or push
       let object = arrPeople.find(element => element.authorIdComment === authorIdComment);
       if(object) {
         object.commentContent += ' | ' + commentContent;
@@ -80,6 +83,7 @@ function getAuthorId(el) {
 }
 
 function displayPeople() {
+  console.log(`Đang chạy export...`);
   string = `Id người bình luận,Tên người bình luận,Id bình luận,Nội dung bình luận\r\n`;
   string += arrayToCsv(arrPeople);
   downloadBlob(string, 'export.csv', 'text/csv;charset=utf-8');
