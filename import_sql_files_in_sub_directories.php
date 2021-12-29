@@ -8,6 +8,7 @@ $arrExcludeFolder = [];
 $arrSpecificFolder = []; // ex: [5,7,'test']
 // -1: all
 $numberLimitImport = -1;
+$showErrorQuery = true;
 // MySQL host
 $mysql_host = 'localhost';
 // MySQL username
@@ -19,6 +20,7 @@ $mysql_password = '';
 $arr = [];
 $index = 0;
 $directories = array_map('basename', glob($path . '/*', GLOB_ONLYDIR));
+sort($directories);
 foreach ($directories as $directory) {
     if(!empty($arrSpecificFolder) && !in_array($directory, $arrSpecificFolder)){
         continue;
@@ -72,6 +74,10 @@ foreach($arr as $index => $each){
 
         // Temporary variable, used to store current query
         $templine = '';
+
+        // log errors
+        $errors = [];
+
         // Read in entire file
         $lines = file($filename);
         // Loop through each line
@@ -92,7 +98,10 @@ foreach($arr as $index => $each){
                 // Perform the query
                 mysqli_query($connect,$templine);
                 if(!empty(mysqli_error($connect))){
-                    echo('Error performing query \'<strong>' . $templine . '\': ' . mysqli_error($connect) . '<br /><br />');
+                    if($showErrorQuery){
+                        $error = $templine . '\': ' . mysqli_error($connect);
+                        $errors[] = str_replace(';',',',$error);
+                    }
                     $check_error = 'x';
                 }
                 // Reset temp variable to empty
@@ -102,6 +111,10 @@ foreach($arr as $index => $each){
     }
     echo $check_error;
     echo ";";
+    if($showErrorQuery){
+        echo implode('|', $errors);
+        echo ";";
+    }
     echo implode(';', $each['path']);
     echo "<br>";
 }
