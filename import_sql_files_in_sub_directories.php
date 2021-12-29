@@ -19,8 +19,12 @@ $mysql_password = '';
 $arr = [];
 $index = 0;
 $directories = array_map('basename', glob($path . '/*', GLOB_ONLYDIR));
-foreach ($directories as $index => $directory) {
+foreach ($directories as $directory) {
+    if(!empty($arrSpecificFolder) && !in_array($directory, $arrSpecificFolder)){
+        continue;
+    }
     if (!in_array($directory, $arrExcludeFolder)) {
+        $index++;
         $new_path = $path .'\\' . $directory;
         $Directory = new RecursiveDirectoryIterator($new_path);
         $Iterator = new RecursiveIteratorIterator($Directory);
@@ -39,13 +43,13 @@ foreach ($directories as $index => $directory) {
             $arr[$index]['import'] = true;
         }
     }
+    if($index === $numberLimitImport){
+        break;
+    }
 }
 
 // import each
 foreach($arr as $index => $each){
-    if(!empty($arrSpecificFolder) && !in_array($each['name'], $arrSpecificFolder)){
-        continue;
-    }
     echo $each['name'];
     echo ";";
     $check_error = '0';
@@ -100,7 +104,4 @@ foreach($arr as $index => $each){
     echo ";";
     echo implode(';', $each['path']);
     echo "<br>";
-    if($index === $numberLimitImport){
-        break;
-    }
 }
