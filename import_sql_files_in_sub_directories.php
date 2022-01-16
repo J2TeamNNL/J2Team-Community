@@ -30,7 +30,7 @@ foreach ($directories as $directory) {
         $new_path = $path .'\\' . $directory;
         $Directory = new RecursiveDirectoryIterator($new_path);
         $Iterator = new RecursiveIteratorIterator($Directory);
-        $Regex = new RegexIterator($Iterator, '/^.+\.sql$/i', RecursiveRegexIterator::GET_MATCH);
+        $Regex = new RegexIterator($Iterator, '/^.+\.sql$/i', RegexIterator::GET_MATCH);
 
         $arr[$index]['name'] = $directory;
         $count = 0;
@@ -55,6 +55,9 @@ foreach($arr as $index => $each){
     echo $each['name'];
     echo ";";
     $check_error = '0';
+
+    // log errors
+    $errors = [];
     if($each['import']){
         $check_error = '';
         // Name of the file
@@ -75,25 +78,24 @@ foreach($arr as $index => $each){
         // Temporary variable, used to store current query
         $templine = '';
 
-        // log errors
-        $errors = [];
-
         // Read in entire file
         $lines = file($filename);
         // Loop through each line
         foreach ($lines as $line)
         {
             // Skip it if it's a comment
-            if (substr($line, 0, 2) == '--' || $line == '')
+            if (trim($line) === '' || strpos($line, '--') !== false) {
                 continue;
-            // Skip create database 
-            if (strpos($line, 'CREATE DATABASE') !== false || strpos($line, 'USE') !== false)
+            }
+            // Skip create database
+            if (strpos($line, 'CREATE DATABASE') !== false || strpos($line, 'USE') !== false) {
                 continue;
+            }
 
             // Add this line to the current segment
             $templine .= $line;
             // If it has a semicolon at the end, it's the end of the query
-            if (substr(trim($line), -1, 1) == ';')
+            if (substr(trim($line), -1, 1) === ';')
             {
                 // Perform the query
                 mysqli_query($connect,$templine);
